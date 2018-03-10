@@ -1,62 +1,79 @@
+import 'dart:async';
+
+import 'package:cap_challenge/code_cap.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: new ThemeData(primarySwatch: Colors.red),
+      home: new HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class HomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  State<StatefulWidget> createState() {
+    return new HomePageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class HomePageState extends State<HomePage> {
+  bool showFab = true;
+  bool isCapOpened = false;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.title),
+        title: new Text("Cap challenge"),
       ),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'You have pushed the button this many times:',
-            ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
+      body: new Center(),
+      floatingActionButton: new Hero(
+        tag: "fab-cap",
+        child: showFab
+            ? new FloatingActionButton(
+          child: new Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              new HeroDialogRoute(
+                builder: (BuildContext context) {
+                  return new Center(
+                    child: new CodeCap(),
+                  );
+                },
+              ),
+            ).then(
+                  (_) {
+                setState(() => isCapOpened = false);
+                new Future.delayed(
+                  const Duration(milliseconds: 5),
+                      () => setState(() => showFab = true),
+                );
+              },
+            );
+            setState(() => isCapOpened = true);
+            new Future.delayed(
+              const Duration(milliseconds: 300),
+                  () =>
+                  setState(
+                        () {
+                      if (isCapOpened) {
+                        showFab = false;
+                      }
+                    },
+                  ),
+            );
+          },
+        )
+            : new Container(),
       ),
     );
   }
