@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cap_challenge/code_cap.dart';
+import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:cap_challenge/widgets/challenges_page.dart';
 import 'package:cap_challenge/widgets/collection_page.dart';
 import 'package:cap_challenge/widgets/community_page.dart';
@@ -38,38 +39,41 @@ class MainScaffoldState extends State<MainScaffold>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Cap challenge"),
-        ),
-        body: _buildBody(),
-        bottomNavigationBar: new BottomNavigationBar(
-          items: [
-            new BottomNavigationBarItem(
-              backgroundColor: Colors.red,
-              icon: new Icon(Icons.whatshot),
-              title: new Text("Zadanie dnia"),
-            ),
-            new BottomNavigationBarItem(
-              backgroundColor: Colors.red,
-              icon: new Icon(Icons.list),
-              title: new Text("Kolekcja"),
-            ),
-            new BottomNavigationBarItem(
-              backgroundColor: Colors.red,
-              icon: new Icon(Icons.star),
-              title: new Text("Wyzwania"),
-            ),
-            new BottomNavigationBarItem(
-              backgroundColor: Colors.red,
-              icon: new Icon(Icons.people),
-              title: new Text("Społeczność"),
-            ),
-          ],
-          type: BottomNavigationBarType.fixed,
-          onTap: _navigationTapped,
-          currentIndex: _page,
-        ),
-        floatingActionButton: _createHeroFab(context));
+      appBar: new AppBar(
+        title: new Text("Cap challenge"),
+      ),
+      body: _buildBody(),
+      bottomNavigationBar: new BottomNavigationBar(
+        items: [
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.red,
+            icon: new Icon(Icons.whatshot),
+            title: new Text("Zadanie dnia"),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.red,
+            icon: new Icon(Icons.list),
+            title: new Text("Kolekcja"),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.red,
+            icon: new Icon(Icons.star),
+            title: new Text("Wyzwania"),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.red,
+            icon: new Icon(Icons.people),
+            title: new Text("Społeczność"),
+          ),
+        ],
+        type: BottomNavigationBarType.fixed,
+        onTap: _navigationTapped,
+        currentIndex: _page,
+      ),
+      floatingActionButton: new Builder(
+        builder: (BuildContext context) => _createHeroFab(context),
+      ),
+    );
   }
 
   void _navigationTapped(int page) {
@@ -87,7 +91,12 @@ class MainScaffoldState extends State<MainScaffold>
     return new FloatingActionButton(
       child: new Icon(Icons.add),
       onPressed: () {
-        _pushCapView(context).then((_) => _onCapClosed());
+        _pushCapView(context).then((dynamic result) {
+          _onCapClosed();
+          if (result is ScannedQRCodeResult) {
+            _handleQrCode(result, context);
+          }
+        });
         _onCapOpened();
       },
     );
@@ -103,6 +112,12 @@ class MainScaffoldState extends State<MainScaffold>
         },
       ),
     );
+  }
+
+  void _handleQrCode(ScannedQRCodeResult result, BuildContext context) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text(result.qrCode),
+    ));
   }
 
   _onCapClosed() {
