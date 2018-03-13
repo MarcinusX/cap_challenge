@@ -13,6 +13,7 @@ class CodeCap extends StatefulWidget {
 
 class CodeCapState extends State<CodeCap> {
   TextEditingController textController;
+  bool _shouldShowSubmitButton = false;
 
   @override
   void initState() {
@@ -44,37 +45,62 @@ class CodeCapState extends State<CodeCap> {
                         decoration:
                         new InputDecoration(labelText: "Kod spod nakrętki"),
                         controller: textController,
+                        onChanged: (text) =>
+                            setState(
+                                    () =>
+                                _shouldShowSubmitButton = text.length == 14),
                       ),
                     ),
-                  )
+                  ),
+                  new Opacity(
+                    opacity: _shouldShowSubmitButton ? 1.0 : 0.0,
+                    child: new Align(
+                      alignment: Alignment.bottomCenter,
+                      child: new Padding(
+                        padding: const EdgeInsets.only(bottom: 72.0),
+                        child: new RaisedButton(
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                          ),
+                          onPressed: () {},
+                          color: Colors.red,
+                          child: new Text(
+                            "WYŚLIJ KOD",
+                            style: new TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
-        new Positioned(
-          bottom: 0.0,
+        new Align(
+          alignment: Alignment.bottomLeft,
           child: new Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 72.0),
-              child: new FloatingActionButton(
-                onPressed: () {
-                  new QRCodeReader().scan().then((String qrCode) {
-                    if (qrCode != null) {
-                      new Future.delayed(const Duration(milliseconds: 500), () {
-                        Navigator
-                            .of(context)
-                            .pop(new ScannedQRCodeResult(qrCode));
-                      });
-                    }
-                  });
-                },
-                child: new Image.asset(
-                  "images/qr_code.png",
-                  width: 32.0,
-                  color: Colors.white,
-                ),
-              )),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 72.0),
+            child: new FloatingActionButton(
+              onPressed: () {
+                new QRCodeReader().scan().then((String qrCode) {
+                  if (qrCode != null) {
+                    new Future.delayed(const Duration(milliseconds: 500), () {
+                      Navigator
+                          .of(context)
+                          .pop(new ScannedQRCodeResult(qrCode));
+                    });
+                  }
+                });
+              },
+              child: new Image.asset(
+                "images/qr_code.png",
+                width: 32.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ],
     );
