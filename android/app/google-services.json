@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "506626629602",
+    "firebase_url": "https://cap-challenge.firebaseio.com",
+    "project_id": "cap-challenge",
+    "storage_bucket": "cap-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506626629602:android:c123024910d55d86",
+        "android_client_info": {
+          "package_name": "com.mszalek.capchallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506626629602-fl10c89l4qr8b7dldct4e9f0vj70u4eh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszalek.capchallenge",
+            "certificate_hash": "4cfcaae693f041e62c51224b17ff5920ca45db7c"
+          }
+        },
+        {
+          "client_id": "506626629602-t53t06721gbgjh0di6qnoruvlshfsilr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA62F66el7iid5o5WK6jn7VylmSr_RyKOo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506626629602-t53t06721gbgjh0di6qnoruvlshfsilr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

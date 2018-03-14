@@ -41,6 +41,7 @@ class CodeCapState extends State<CodeCap> {
                     child: new Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 68.0),
                       child: new TextField(
+                        autocorrect: false,
                         maxLength: 14,
                         decoration:
                         new InputDecoration(labelText: "Kod spod nakrętki"),
