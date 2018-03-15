@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:cap_challenge/code_cap.dart';
+import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
-import 'package:cap_challenge/widgets/challenges_page.dart';
-import 'package:cap_challenge/widgets/collection_page.dart';
-import 'package:cap_challenge/widgets/community_page.dart';
-import 'package:cap_challenge/widgets/timer_page.dart';
+import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
+import 'package:cap_challenge/widgets/code_cap.dart';
+import 'package:cap_challenge/widgets/collection/collection_page.dart';
+import 'package:cap_challenge/widgets/community/community_page.dart';
+import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
 import 'package:flutter/material.dart';
 
 class MainScaffold extends StatefulWidget {
@@ -41,6 +42,23 @@ class MainScaffoldState extends State<MainScaffold>
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Cap challenge"),
+        actions: <Widget>[
+          new GestureDetector(
+            child: new Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: new CircleAvatar(
+                radius: 22.0,
+                backgroundImage:
+                new NetworkImage(AuthService.instance.currentUser.photoUrl),
+              ),
+            ),
+            onTap: () {
+              AuthService.instance.logout().then(
+                      (_) =>
+                      Navigator.of(context).pushReplacementNamed("login"));
+            },
+          )
+        ],
       ),
       body: _buildBody(),
       bottomNavigationBar: new BottomNavigationBar(

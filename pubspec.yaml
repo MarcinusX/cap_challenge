@@ -9,6 +9,7 @@ dependencies:
   firebase_auth: "^0.5.0"
   firebase_database: "^0.4.0"
   cupertino_icons: ^0.1.0
+  flutter_facebook_login: "^1.0.3"
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +34,9 @@ flutter:
   assets:
     - images/cap.png
     - images/qr_code.png
+    - images/sign-in-facebook.png
+    - images/sign-in-google.png
+    - images/coca_family.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -45,6 +49,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Marker
+      fonts:
+        - asset: fonts/PermanentMarker-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
