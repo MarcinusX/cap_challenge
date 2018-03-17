@@ -9,7 +9,6 @@ class ChallengesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ListView(
-
       children: challenges.map((c) => new ChallengeCard(c)).toList(),
     );
   }

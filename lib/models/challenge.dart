@@ -13,6 +13,11 @@ class Challenge {
       this.photoUrl,
       this.name,
       this.difficulty});
+
+  int get totalBottles => requirements.values.reduce((i1, i2) => i1 + i2);
+
+  List<BottleName> get bottleNames =>
+      requirements.keys.map((bottle) => bottle.bottleName).toSet().toList();
 }
 
 enum Difficulty {
