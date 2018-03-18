@@ -1,5 +1,7 @@
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
+import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
+import 'package:cap_challenge/widgets/challenges/challenge_details_page.dart';
 import 'package:flutter/material.dart';
 
 class ChallengeCard extends StatelessWidget {
@@ -32,7 +34,7 @@ class ChallengeCard extends StatelessWidget {
         children: <Widget>[
           new Row(
             children: <Widget>[
-              _buildDifficultyStars(challenge),
+              buildDifficultyStars(challenge),
               new Expanded(child: new Container()),
               new Text(
                 challenge.reward.toString(),
@@ -101,10 +103,13 @@ class ChallengeCard extends StatelessWidget {
     return new Stack(
       fit: StackFit.passthrough,
       children: <Widget>[
-        new Image.network(
-          challenge.photoUrl,
-          height: 200.0,
-          fit: BoxFit.cover,
+        new Hero(
+          tag: "challenge_image_${challenge.name}",
+          child: new Image.network(
+            challenge.photoUrl,
+            height: 180.0,
+            fit: BoxFit.cover,
+          ),
         ),
         new Positioned(
           bottom: 0.0,
@@ -122,19 +127,6 @@ class ChallengeCard extends StatelessWidget {
     );
   }
 
-  Color _getDifficultyColor(Challenge challenge) {
-    switch (challenge.difficulty) {
-      case Difficulty.EASY:
-        return Colors.green;
-      case Difficulty.MEDIUM:
-        return Colors.yellow;
-      case Difficulty.HARD:
-        return Colors.red;
-      default:
-        return Colors.white;
-    }
-  }
-
   Widget _buildShade(BuildContext context, Challenge challenge) {
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,7 +138,7 @@ class ChallengeCard extends StatelessWidget {
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               colors: [
-                _getDifficultyColor(challenge),
+                getDifficultyColor(challenge),
                 const Color(0x00FFFFFF),
               ],
             ),
@@ -175,31 +167,7 @@ class ChallengeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDifficultyStars(Challenge challenge) {
-    Color color = _getDifficultyColor(challenge);
-    bool secondStarFilled = challenge.difficulty != Difficulty.EASY;
-    bool thirdStarFilled = challenge.difficulty == Difficulty.HARD;
-    double sizeFilled = 36.0;
-    double sizeEmpty = 24.0;
-    Icon star1 = new Icon(Icons.star, color: color, size: sizeFilled);
-    Icon star2 = new Icon(
-      secondStarFilled ? Icons.star : Icons.star_border,
-      color: color,
-      size: secondStarFilled ? sizeFilled : sizeEmpty,
-    );
-    Icon star3 = new Icon(
-      thirdStarFilled ? Icons.star : Icons.star_border,
-      color: color,
-      size: thirdStarFilled ? sizeFilled : sizeEmpty,
-    );
-    return new Row(
-      children: <Widget>[
-        star1,
-        star2,
-        star3,
-      ],
-    );
-  }
+
 
   Widget _buildBottomButtons(BuildContext context) {
     return new Row(
@@ -212,10 +180,11 @@ class ChallengeCard extends StatelessWidget {
         ),
         new FlatButton(
           textColor: Colors.red,
-          onPressed: () {},
+          onPressed: () =>
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (context) => new ChallengeDetailsPage(challenge))),
           child: new Text("POKAŻ WIĘCEJ"),
         ),
-
       ],
     );
   }
