@@ -1,6 +1,20 @@
+import 'dart:math' as math;
+
+import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
 import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
 import 'package:flutter/material.dart';
+
+List<Bottle> bottleCollection = [
+  new Bottle(BottleName.SPRITE, Capacity.CAN_300, 50),
+  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10),
+  new Bottle(BottleName.COCA_COLA_ZERO, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
+  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_2L, 50),
+  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10),
+  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
+];
 
 class ChallengeDetailsPage extends StatelessWidget {
   final Challenge challenge;
@@ -17,28 +31,47 @@ class ChallengeDetailsPage extends StatelessWidget {
             delegate: new SliverChildListDelegate(
               <Widget>[
                 buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-                buildDifficultyStars(challenge),
-              ],
+              ]
+                ..addAll(challenge.requirements.keys.map((bottle) {
+                  return _buildRequirementRow(
+                    context,
+                    bottle,
+                    challenge.requirements[bottle],
+                    bottleCollection
+                        .where((btl) => btl == bottle)
+                        .length,
+                  );
+                }).toList()),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildRequirementRow(BuildContext context, Bottle bottle, int required,
+      int current) {
+    int viewCurrent = math.min(current, required);
+    Color borderColor = const Color(0x00FF0000);
+    Color startColor = const Color(0x60FF0000);
+    Color endColor =
+    viewCurrent == required ? startColor : const Color(0x00FF0000);
+    return new Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: new Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new Text(bottle.toString(),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subhead),
+            ),
+            new Text("$current / $required"),
+          ],
+        ),
       ),
     );
   }
