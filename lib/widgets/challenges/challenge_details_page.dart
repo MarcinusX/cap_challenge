@@ -19,6 +19,8 @@ List<Bottle> bottleCollection = [
 class ChallengeDetailsPage extends StatelessWidget {
   final Challenge challenge;
 
+  double _rowHeight = 32.0;
+
   ChallengeDetailsPage(this.challenge);
 
   @override
@@ -51,28 +53,55 @@ class ChallengeDetailsPage extends StatelessWidget {
 
   Widget _buildRequirementRow(BuildContext context, Bottle bottle, int required,
       int current) {
+//    return new Padding(
+//      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+//      child: new Padding(
+//        padding: const EdgeInsets.all(8.0),
+//        child: new Row(
+//          children: <Widget>[
+//            new Expanded(
+//              child: new Text(bottle.toString(),
+//                  style: Theme.of(context).textTheme.subhead),
+//            ),
+//            _buildProgressIndicator(required, current),
+//          ],
+//        ),
+//      ),
+//    );
+    return new ListTile(
+      title: new Text(bottleNameToString(bottle.bottleName)),
+      subtitle: new Text(bottleCapacityToString(bottle.capacity)),
+      trailing: _buildProgressIndicator(required, current),
+    );
+  }
+
+  Widget _buildProgressIndicator(int required, int current) {
     int viewCurrent = math.min(current, required);
-    Color borderColor = const Color(0x00FF0000);
-    Color startColor = const Color(0x60FF0000);
-    Color endColor =
-    viewCurrent == required ? startColor : const Color(0x00FF0000);
-    return new Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new Text(bottle.toString(),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subhead),
+    int missing = required - viewCurrent;
+    List<Widget> filledBottles = new Iterable.generate(
+      viewCurrent,
+          (i) =>
+      new Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: new Image.asset(
+          "images/bottle_filled.png",
+          height: _rowHeight,
             ),
-            new Text("$current / $required"),
-          ],
+      ),
+    ).toList();
+    List<Widget> emptyBottles = new Iterable.generate(
+      missing,
+          (i) =>
+      new Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: new Image.asset(
+          "images/bottle_empty.png",
+          height: _rowHeight,
         ),
       ),
+    ).toList();
+    return new Row(
+      children: filledBottles..addAll(emptyBottles),
     );
   }
 

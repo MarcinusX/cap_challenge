@@ -37,6 +37,8 @@ flutter:
     - images/sign-in-facebook.png
     - images/sign-in-google.png
     - images/coca_family.png
+    - images/bottle_empty.png
+    - images/bottle_filled.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
