@@ -32,7 +32,25 @@ class ChallengeDetailsPage extends StatelessWidget {
           new SliverList(
             delegate: new SliverChildListDelegate(
               <Widget>[
-                buildDifficultyStars(challenge),
+                new Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: new Row(
+                    children: <Widget>[
+                      new Text("Poziom trudności:  "),
+                      buildDifficultyIndicator(challenge),
+                    ],
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: new Row(
+                    children: <Widget>[
+                      new Text("Nagroda:  "),
+                      getRewardView(challenge),
+                    ],
+                  ),
+                ),
               ]
                 ..addAll(challenge.requirements.keys.map((bottle) {
                   return _buildRequirementRow(
@@ -53,21 +71,6 @@ class ChallengeDetailsPage extends StatelessWidget {
 
   Widget _buildRequirementRow(BuildContext context, Bottle bottle, int required,
       int current) {
-//    return new Padding(
-//      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-//      child: new Padding(
-//        padding: const EdgeInsets.all(8.0),
-//        child: new Row(
-//          children: <Widget>[
-//            new Expanded(
-//              child: new Text(bottle.toString(),
-//                  style: Theme.of(context).textTheme.subhead),
-//            ),
-//            _buildProgressIndicator(required, current),
-//          ],
-//        ),
-//      ),
-//    );
     return new ListTile(
       title: new Text(bottleNameToString(bottle.bottleName)),
       subtitle: new Text(bottleCapacityToString(bottle.capacity)),

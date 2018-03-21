@@ -34,20 +34,12 @@ class ChallengeCard extends StatelessWidget {
         children: <Widget>[
           new Row(
             children: <Widget>[
-              buildDifficultyStars(challenge),
-              new Expanded(child: new Container()),
-              new Text(
-                challenge.reward.toString(),
-                style: new TextStyle(
-                    color: Colors.yellow[600],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0),
+              new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: buildDifficultyIndicator(challenge),
               ),
-              new Icon(
-                Icons.monetization_on,
-                color: Colors.yellow[600],
-                size: 36.0,
-              )
+              new Expanded(child: new Container()),
+              getRewardView(challenge),
             ],
           ),
           _buildNeededBottles(context),
@@ -132,13 +124,13 @@ class ChallengeCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         new Container(
-          height: 70.0,
+          height: 80.0,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               colors: [
-                getDifficultyColor(challenge),
+                const Color(0x77FF0000),
                 const Color(0x00FFFFFF),
               ],
             ),
@@ -160,7 +152,7 @@ class ChallengeCard extends StatelessWidget {
                 .of(context)
                 .textTheme
                 .display1
-                .copyWith(color: Colors.black),
+                .copyWith(color: Colors.white),
           ),
         ),
       ],
