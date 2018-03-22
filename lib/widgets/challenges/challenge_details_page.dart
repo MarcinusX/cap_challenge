@@ -12,8 +12,12 @@ List<Bottle> bottleCollection = [
   new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
   new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_2L, 50),
   new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10),
-  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
   new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
+  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
+  new Bottle(BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 50),
 ];
 
 class ChallengeDetailsPage extends StatelessWidget {
@@ -32,6 +36,8 @@ class ChallengeDetailsPage extends StatelessWidget {
           new SliverList(
             delegate: new SliverChildListDelegate(
               <Widget>[
+                new FloatingActionButton(onPressed: () {}),
+                _buildConfirmButtonOrLabel(bottleCollection, challenge),
                 new Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: new Row(
@@ -67,6 +73,50 @@ class ChallengeDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildConfirmButtonOrLabel(List<Bottle> collection,
+      Challenge challenge) {
+    return new Builder(builder: (context) {
+      return new Padding(
+        padding: new EdgeInsets.all(16.0),
+        child: _canChallengeBeCompleted(collection, challenge)
+            ? new Column(
+          children: <Widget>[
+            new RaisedButton(
+              onPressed: () {
+                Scaffold.of(context).showSnackBar(new SnackBar(
+                    content: new Text("Tak jakby wykonane")));
+              },
+              color: Colors.red,
+              child: new Text("WYKONAJ!"),
+            ),
+          ],
+        )
+            : new Text(
+          "Brakuje Ci tylko ${_getMissingBottles(
+              bottleCollection, challenge)}!",
+          textAlign: TextAlign.center,
+        ),
+      );
+    });
+  }
+
+  bool _canChallengeBeCompleted(List<Bottle> collection, Challenge challenge) {
+    return _getMissingBottles(collection, challenge) == 0;
+  }
+
+  int _getMissingBottles(List<Bottle> collection, Challenge challenge) {
+    int missing = 0;
+    challenge.requirements.forEach((bottle, required) {
+      int diff = required - collection
+          .where((bot) => bot == bottle)
+          .length;
+      if (diff > 0) {
+        missing += diff;
+      }
+    });
+    return missing;
   }
 
   Widget _buildRequirementRow(BuildContext context, Bottle bottle, int required,
