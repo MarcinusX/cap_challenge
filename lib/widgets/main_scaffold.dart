@@ -108,6 +108,7 @@ class MainScaffoldState extends State<MainScaffold>
   Widget _createActualFab(BuildContext context) {
     return new FloatingActionButton(
       child: new Icon(Icons.add),
+      tooltip: "Dodaj kod spod nakrętki",
       onPressed: () {
         _pushCapView(context).then((dynamic result) {
           _onCapClosed();
