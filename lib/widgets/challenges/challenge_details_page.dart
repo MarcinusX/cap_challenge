@@ -20,30 +20,56 @@ List<Bottle> bottleCollection = [
   new Bottle(BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 50),
 ];
 
-class ChallengeDetailsPage extends StatelessWidget {
+class ChallengeDetailsPage extends StatefulWidget {
   final Challenge challenge;
 
-  double _rowHeight = 32.0;
-
   ChallengeDetailsPage(this.challenge);
+
+  @override
+  ChallengeDetailsPageState createState() {
+    return new ChallengeDetailsPageState();
+  }
+}
+
+class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
+  static const double _rowHeight = 32.0;
+
+  static const double _appBarHeight = 256.0;
+
+  static const double _appBarMarginBottom = 8.0;
+
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = new ScrollController();
+    _scrollController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new CustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
           _buildSliverAppBar(),
           new SliverList(
             delegate: new SliverChildListDelegate(
               <Widget>[
-                new FloatingActionButton(onPressed: () {}),
-                _buildConfirmButtonOrLabel(bottleCollection, challenge),
+                _buildConfirmButtonOrLabel(bottleCollection, widget.challenge),
                 new Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: new Row(
                     children: <Widget>[
                       new Text("Poziom trudności:  "),
-                      buildDifficultyIndicator(challenge),
+                      buildDifficultyIndicator(widget.challenge),
                     ],
                   ),
                 ),
@@ -53,21 +79,30 @@ class ChallengeDetailsPage extends StatelessWidget {
                   child: new Row(
                     children: <Widget>[
                       new Text("Nagroda:  "),
-                      getRewardView(challenge),
+                      getRewardView(widget.challenge),
                     ],
                   ),
                 ),
-              ]
-                ..addAll(challenge.requirements.keys.map((bottle) {
-                  return _buildRequirementRow(
-                    context,
-                    bottle,
-                    challenge.requirements[bottle],
-                    bottleCollection
-                        .where((btl) => btl == bottle)
-                        .length,
-                  );
-                }).toList()),
+              ]..addAll(widget.challenge.requirements.keys.map((bottle) {
+                return _buildRequirementRow(
+                  context,
+                  bottle,
+                  widget.challenge.requirements[bottle],
+                  bottleCollection
+                      .where((btl) => btl == bottle)
+                      .length,
+                );
+              }).toList())..addAll(
+                  widget.challenge.requirements.keys.map((bottle) {
+                    return _buildRequirementRow(
+                      context,
+                      bottle,
+                      widget.challenge.requirements[bottle],
+                      bottleCollection
+                          .where((btl) => btl == bottle)
+                          .length,
+                    );
+                  }).toList()),
             ),
           ),
         ],
@@ -139,7 +174,7 @@ class ChallengeDetailsPage extends StatelessWidget {
         child: new Image.asset(
           "images/bottle_filled.png",
           height: _rowHeight,
-            ),
+        ),
       ),
     ).toList();
     List<Widget> emptyBottles = new Iterable.generate(
@@ -159,50 +194,77 @@ class ChallengeDetailsPage extends StatelessWidget {
   }
 
   SliverAppBar _buildSliverAppBar() {
+    double titleMargin = _appBarMarginBottom;
+    Color backgroundColor = Colors.transparent;
+    double fabOpacity = 1.0;
+    if (_scrollController.hasClients) {
+      double _base = _appBarHeight - 42.0 - _appBarMarginBottom;
+      double factor = math.max((_base - _scrollController.offset) / _base, 0.0);
+      titleMargin *= factor;
+      backgroundColor = factor < 0.2 ? Colors.red : Colors.transparent;
+      fabOpacity = math.max(8 * factor - 7, 0.0);
+      print(factor);
+    }
     return new SliverAppBar(
-      expandedHeight: 256.0,
+      backgroundColor: backgroundColor,
+      expandedHeight: _appBarHeight,
       pinned: true,
       flexibleSpace: new FlexibleSpaceBar(
-        title: new Text(challenge.name),
-        background: new Container(
-          color: Colors.white,
-          child: new Hero(
-            tag: "challenge_image_${challenge.name}",
-            child: new Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                new Image.network(
-                  challenge.photoUrl,
-                  height: 256.0,
-                  fit: BoxFit.cover,
-                ),
-                const DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: const Alignment(0.0, -1.0),
-                      end: const Alignment(0.0, -0.4),
-                      colors: const <Color>[
-                        const Color(0x60FF0000),
-                        const Color(0x00FF0000)
-                      ],
+        title: new Padding(
+          padding: new EdgeInsets.only(bottom: titleMargin),
+          child: new Text(widget.challenge.name),
+        ),
+        background: new Stack(
+          children: <Widget>[
+            new Container(
+              height: _appBarHeight - _appBarMarginBottom,
+              color: Colors.white,
+              child: new Hero(
+                tag: "challenge_image_${widget.challenge.name}",
+                child: new Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    new Image.network(
+                      widget.challenge.photoUrl,
+                      height: _appBarHeight - _appBarMarginBottom,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-                const DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: const Alignment(0.0, 1.0),
-                      end: const Alignment(0.0, 0.4),
-                      colors: const <Color>[
-                        const Color(0x60FF0000),
-                        const Color(0x00FF0000)
-                      ],
+                    const DecoratedBox(
+                      decoration: const BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: const Alignment(0.0, -1.0),
+                          end: const Alignment(0.0, -0.4),
+                          colors: const <Color>[
+                            const Color(0x60FF0000),
+                            const Color(0x00FF0000)
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    const DecoratedBox(
+                      decoration: const BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: const Alignment(0.0, 1.0),
+                          end: const Alignment(0.0, 0.4),
+                          colors: const <Color>[
+                            const Color(0x60FF0000),
+                            const Color(0x00FF0000)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            new Positioned(
+              right: 16.0,
+              top: _appBarHeight - 48.0,
+              child: new Opacity(
+                  opacity: fabOpacity,
+                  child: new FloatingActionButton(onPressed: () {})),
+            )
+          ],
         ),
       ),
     );
