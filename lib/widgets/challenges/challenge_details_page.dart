@@ -61,7 +61,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
               new SliverList(
                 delegate: new SliverChildListDelegate(
                   <Widget>[
-                    _buildConfirmButtonOrLabel(
+                    _buildMissingBottlesLabel(
                         bottleCollection, widget.challenge),
                     new Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -140,7 +140,10 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         child: new FloatingActionButton(
           heroTag: null,
           onPressed: () {},
-          child: new Icon(Icons.check, size: (size) / 2.0,),
+          child: new Icon(
+            Icons.check,
+            size: (size) / 2.0,
+          ),
         ),
       ),
       top: top,
@@ -148,31 +151,20 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     );
   }
 
-  Widget _buildConfirmButtonOrLabel(List<Bottle> collection,
+  Widget _buildMissingBottlesLabel(List<Bottle> collection,
       Challenge challenge) {
-    return new Builder(builder: (context) {
+    if (_canChallengeBeCompleted(collection, challenge)) {
+      return new Container();
+    } else {
       return new Padding(
         padding: new EdgeInsets.all(16.0),
-        child: _canChallengeBeCompleted(collection, challenge)
-            ? new Column(
-          children: <Widget>[
-            new RaisedButton(
-              onPressed: () {
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                    content: new Text("Tak jakby wykonane")));
-              },
-              color: Colors.red,
-              child: new Text("WYKONAJ!"),
-            ),
-          ],
-        )
-            : new Text(
+        child: new Text(
           "Brakuje Ci tylko ${_getMissingBottles(
               bottleCollection, challenge)}!",
           textAlign: TextAlign.center,
         ),
       );
-    });
+    }
   }
 
   bool _canChallengeBeCompleted(List<Bottle> collection, Challenge challenge) {
