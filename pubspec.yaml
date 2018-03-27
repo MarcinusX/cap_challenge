@@ -10,6 +10,7 @@ dependencies:
   firebase_database: "^0.4.0"
   cupertino_icons: ^0.1.0
   flutter_facebook_login: "^1.0.3"
+  sliver_fab: "^0.1.0"
 
 dev_dependencies:
   flutter_test:

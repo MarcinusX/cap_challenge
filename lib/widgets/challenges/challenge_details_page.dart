@@ -4,6 +4,7 @@ import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
 import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
 import 'package:flutter/material.dart';
+import 'package:sliver_fab/sliver_fab.dart';
 
 List<Bottle> bottleCollection = [
   new Bottle(BottleName.SPRITE, Capacity.CAN_300, 50),
@@ -34,121 +35,80 @@ class ChallengeDetailsPage extends StatefulWidget {
 class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   final double _rowHeight = 32.0;
 
-  ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = new ScrollController();
-    _scrollController.addListener(() => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Stack(
-        children: <Widget>[
-          new CustomScrollView(
-            controller: _scrollController,
-            slivers: <Widget>[
-              _buildSliverAppBar(),
-              new SliverList(
-                delegate: new SliverChildListDelegate(
-                  <Widget>[
-                    _buildMissingBottlesLabel(
-                        bottleCollection, widget.challenge),
-                    new Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: new Row(
-                        children: <Widget>[
-                          new Text("Poziom trudności:  "),
-                          buildDifficultyIndicator(widget.challenge),
-                        ],
-                      ),
-                    ),
-                    new Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: new Row(
-                        children: <Widget>[
-                          new Text("Nagroda:  "),
-                          getRewardView(widget.challenge),
-                        ],
-                      ),
-                    ),
-                  ]..addAll(widget.challenge.requirements.keys.map((bottle) {
-                    return _buildRequirementRow(
-                      context,
-                      bottle,
-                      widget.challenge.requirements[bottle],
-                      bottleCollection
-                          .where((btl) => btl == bottle)
-                          .length,
-                    );
-                  }).toList())..addAll(
-                      widget.challenge.requirements.keys.map((bottle) {
-                        return _buildRequirementRow(
-                          context,
-                          bottle,
-                          widget.challenge.requirements[bottle],
-                          bottleCollection
-                              .where((btl) => btl == bottle)
-                              .length,
-                        );
-                      }).toList()),
-                ),
-              ),
-            ],
+      body: new SliverFab(
+        floatingActionButton: _buildFab(bottleCollection, widget.challenge),
+        slivers: <Widget>[
+          _buildSliverAppBar(),
+          new SliverList(
+            delegate: new SliverChildListDelegate(
+              <Widget>[
+                _buildMissingBottlesLabel(bottleCollection, widget.challenge),
+                _buildDifficultyRow(),
+                _buildPriceRow(),
+              ]..addAll(_buildRequirementsRows(widget.challenge))..addAll(
+                  _buildRequirementsRows(widget.challenge)),
+            ),
           ),
-          _buildFab(),
         ],
       ),
     );
   }
 
-  Widget _buildFab() {
-    final defaultTop = 256.0 - 4.0;
-    final defaultSize = 56.0;
-    final defaultRight = 16.0;
-    double right = defaultRight;
-    double top = defaultTop;
-    double margin = 96.0;
-    double size = defaultSize;
-
-    if (_scrollController.hasClients) {
-      top = top - _scrollController.offset;
-      if (_scrollController.offset < defaultTop - margin) {
-        size = size;
-      } else if (_scrollController.offset < defaultTop - margin / 2) {
-        size = defaultTop - margin / 2.0 - _scrollController.offset;
-        top += (defaultSize - size) / 2.0;
-        right += (defaultSize - size) / 2.0;
-      } else {
-        size = 0.0;
-      }
-    }
-    return new Positioned(
-      child: new Container(
-        height: size,
-        width: size,
-        child: new FloatingActionButton(
-          heroTag: null,
-          onPressed: () {},
-          child: new Icon(
-            Icons.check,
-            size: (size) / 2.0,
-          ),
+  Widget _buildFab(List<Bottle> collection, Challenge challenge) {
+    if (_canChallengeBeCompleted(collection, challenge)) {
+      return new Builder(
+        builder: (context) =>
+        new FloatingActionButton(
+          onPressed: () {
+            Scaffold.of(context).showSnackBar(new SnackBar(
+                content: new Text("Tak jakby wypełniłeś zadanie")));
+          },
+          child: new Icon(Icons.check),
         ),
+      );
+    } else {
+      return new Container();
+    }
+  }
+
+  Padding _buildDifficultyRow() {
+    return new Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: new Row(
+        children: <Widget>[
+          new Text("Poziom trudności:  "),
+          buildDifficultyIndicator(widget.challenge),
+        ],
       ),
-      top: top,
-      right: right,
     );
+  }
+
+  Padding _buildPriceRow() {
+    return new Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: new Row(
+        children: <Widget>[
+          new Text("Nagroda:  "),
+          getRewardView(widget.challenge),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildRequirementsRows(Challenge challenge) {
+    return widget.challenge.requirements.keys.map((bottle) {
+      return _buildRequirementRow(
+        context,
+        bottle,
+        widget.challenge.requirements[bottle],
+        bottleCollection
+            .where((btl) => btl == bottle)
+            .length,
+      );
+    }).toList();
   }
 
   Widget _buildMissingBottlesLabel(List<Bottle> collection,
