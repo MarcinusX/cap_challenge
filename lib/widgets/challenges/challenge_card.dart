@@ -91,31 +91,34 @@ class ChallengeCard extends StatelessWidget {
     );
   }
 
-  Stack _buildImageStack(BuildContext context) {
-    return new Stack(
-      fit: StackFit.passthrough,
-      children: <Widget>[
-        new Hero(
-          tag: "challenge_image_${challenge.name}",
-          child: new Image.network(
-            challenge.photoUrl,
-            height: 180.0,
-            fit: BoxFit.cover,
+  Widget _buildImageStack(BuildContext context) {
+    return new GestureDetector(
+      onTap: () => _goToDetails(context, challenge),
+      child: new Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          new Hero(
+            tag: "challenge_image_${challenge.name}",
+            child: new Image.network(
+              challenge.photoUrl,
+              height: 180.0,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        new Positioned(
-          bottom: 0.0,
-          left: 0.0,
-          right: 0.0,
-          child: _buildShade(context, challenge),
-        ),
-        new Positioned(
-          left: 0.0,
-          right: 0.0,
-          bottom: 0.0,
-          child: _buildTitle(challenge, context),
-        ),
-      ],
+          new Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: _buildShade(context, challenge),
+          ),
+          new Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: _buildTitle(challenge, context),
+          ),
+        ],
+      ),
     );
   }
 
@@ -159,8 +162,6 @@ class ChallengeCard extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildBottomButtons(BuildContext context) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -172,12 +173,15 @@ class ChallengeCard extends StatelessWidget {
         ),
         new FlatButton(
           textColor: Colors.red,
-          onPressed: () =>
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (context) => new ChallengeDetailsPage(challenge))),
+          onPressed: () => _goToDetails(context, challenge),
           child: new Text("POKAŻ WIĘCEJ"),
         ),
       ],
     );
+  }
+
+  _goToDetails(BuildContext context, Challenge challenge) {
+    Navigator.of(context).push(new MaterialPageRoute(
+        builder: (context) => new ChallengeDetailsPage(challenge)));
   }
 }
