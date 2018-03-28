@@ -7,18 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 
 List<Bottle> bottleCollection = [
-  new Bottle(BottleName.SPRITE, Capacity.CAN_300, 50),
-  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10),
-  new Bottle(BottleName.COCA_COLA_ZERO, Capacity.PLASTIC_1L, 50),
-  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
-  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_2L, 50),
-  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10),
-  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
-  new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10),
-  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
-  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
-  new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50),
-  new Bottle(BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 50),
+  Bottle.SPRITE_300,
+  Bottle.SPRITE_500,
+  Bottle.ZERO_1L,
+  Bottle.SPRITE_2L,
+  Bottle.COCA_COLA_2L,
+  Bottle.SPRITE_500,
+  Bottle.SPRITE_1L,
+  Bottle.COCA_COLA_1L,
+  Bottle.COCA_COLA_1L,
+  Bottle.SPRITE_2L,
+  Bottle.ZERO_300,
 ];
 
 class ChallengeDetailsPage extends StatefulWidget {
@@ -148,7 +147,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       int current) {
     return new ListTile(
       title: new Text(bottleNameToString(bottle.bottleName)),
-      subtitle: new Text(bottleCapacityToString(bottle.capacity)),
+      subtitle: new Text(bottleCapacityToLongString(bottle.capacity)),
       trailing: _buildProgressIndicator(required, current),
     );
   }

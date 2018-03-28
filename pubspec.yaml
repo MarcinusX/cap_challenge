@@ -40,6 +40,21 @@ flutter:
     - images/coca_family.png
     - images/bottle_empty.png
     - images/bottle_filled.png
+    - images/coca_cola/can.png
+    - images/coca_cola/bottle_small.png
+    - images/coca_cola/bottle_big.png
+    - images/fanta/can.png
+    - images/fanta/bottle_small.png
+    - images/fanta/bottle_big.png
+    - images/sprite/can.png
+    - images/sprite/bottle_small.png
+    - images/sprite/bottle_medium.png
+    - images/sprite/bottle_big.png
+    - images/coca_cola_baner.jpg
+    - images/coke_light.png
+    - images/coke_zero.png
+    - images/fanta_baner.jpg
+    - images/sprite_baner.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

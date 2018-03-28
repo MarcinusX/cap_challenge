@@ -17,8 +17,8 @@ class ChallengesPage extends StatelessWidget {
 List<Challenge> challenges = [
   new Challenge(
     requirements: {
-      new Bottle(BottleName.COCA_COLA, Capacity.PLASTIC_1L, 50): 3,
-      new Bottle(BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 10): 1,
+      Bottle.COCA_COLA_1L: 3,
+      Bottle.ZERO_300: 1,
     },
     reward: 10000,
     photoUrl:
@@ -28,10 +28,10 @@ List<Challenge> challenges = [
   ),
   new Challenge(
     requirements: {
-      new Bottle(BottleName.COCA_COLA_ZERO, Capacity.PLASTIC_1L, 50): 1,
-      new Bottle(BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 10): 4,
-      new Bottle(BottleName.COCA_COLA_LIGHT, Capacity.PLASTIC_1L, 50): 1,
-      new Bottle(BottleName.COCA_COLA_LIGHT, Capacity.CAN_300, 10): 4,
+      Bottle.ZERO_1L: 1,
+      Bottle.ZERO_300: 4,
+      Bottle.LIGHT_1L: 1,
+      Bottle.LIGHT_300: 4,
     },
     reward: 50000,
     photoUrl:
@@ -41,10 +41,10 @@ List<Challenge> challenges = [
   ),
   new Challenge(
     requirements: {
-      new Bottle(BottleName.SPRITE, Capacity.CAN_300, 50): 3,
-      new Bottle(BottleName.SPRITE, Capacity.PLASTIC_500, 10): 3,
-      new Bottle(BottleName.SPRITE, Capacity.PLASTIC_1L, 50): 3,
-      new Bottle(BottleName.SPRITE, Capacity.PLASTIC_2L, 10): 3,
+      Bottle.SPRITE_300: 3,
+      Bottle.SPRITE_500: 3,
+      Bottle.SPRITE_1L: 3,
+      Bottle.SPRITE_2L: 3,
     },
     reward: 10000,
     photoUrl:
