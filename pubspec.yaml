@@ -55,6 +55,8 @@ flutter:
     - images/coke_zero.png
     - images/fanta_baner.jpg
     - images/sprite_baner.jpeg
+    - images/bubbles.jpg
+    - images/challenge_bottle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
