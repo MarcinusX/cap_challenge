@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
 class TimerPage extends StatefulWidget {
@@ -9,12 +10,33 @@ class TimerPage extends StatefulWidget {
 
 class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   AnimationController _animationController;
+  Animation _bubblesFlowAnimation;
   double _fillPercentage = 0.2;
+  double baseHeight = 800.0;
 
   @override
   void initState() {
     super.initState();
-    _animationController = new AnimationController(vsync: this);
+    _animationController = new AnimationController(
+      duration: new Duration(seconds: 15),
+      vsync: this,
+    );
+    _bubblesFlowAnimation = new Tween(
+      begin: -baseHeight * 2,
+      end: 0.0,
+    )
+        .animate(new CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear,
+    ));
+    _bubblesFlowAnimation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.reset();
+      } else if (status == AnimationStatus.dismissed) {
+        _animationController.forward();
+      }
+    });
+    _animationController.forward();
   }
 
   @override
@@ -26,33 +48,43 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Stack(
+
+      overflow: Overflow.visible,
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
       children: <Widget>[
-        new Transform(
-          transform: new Matrix4.identity()
-            ..translate(0.0, 350 * (1 - _fillPercentage)),
-          child: new Transform(
-              alignment: Alignment.center,
-              transform: new Matrix4.identity()
-                ..scale(0.75),
-              child: new Image.asset(
-                "images/bubbles.jpg",
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.bottomCenter,
-              )),
+        new AnimatedBuilder(
+          animation: _bubblesFlowAnimation,
+          builder: (context, child) {
+            return new Positioned(
+              bottom: _bubblesFlowAnimation.value,
+              child: new Container(
+                width: 130.0,
+                height: 3 * baseHeight,
+                child: new Image.asset(
+                  "images/bubbles_long.jpg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
         ),
-        new Image.asset("images/challenge_bottle.png", fit: BoxFit.fill,),
-        new Positioned(child: new RaisedButton(
-          onPressed: () =>
-              setState(() {
-                _fillPercentage += 0.1;
-                if (_fillPercentage > 1) {
-                  _fillPercentage = 0.0;
-                }
-              }),
-          child: new Text("KLIK"),
+        new Image.asset(
+          "images/challenge_bottle.png",
+          fit: BoxFit.fill,
         ),
+        new Positioned(
+          child: new RaisedButton(
+            onPressed: () {
+//                  _fillPercentage += 0.1;
+//                  if (_fillPercentage > 1) {
+//                    _fillPercentage = 0.0;
+//                  }
+              _animationController.forward().then((_) =>
+                  _animationController.reset());
+            },
+            child: new Text("KLIK"),
+          ),
           bottom: 32.0,
         )
       ],

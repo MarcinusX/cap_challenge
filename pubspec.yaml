@@ -56,6 +56,7 @@ flutter:
     - images/fanta_baner.jpg
     - images/sprite_baner.jpeg
     - images/bubbles.jpg
+    - images/bubbles_long.jpg
     - images/challenge_bottle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
