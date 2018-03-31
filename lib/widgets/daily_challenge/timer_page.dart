@@ -48,46 +48,91 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Stack(
-
       overflow: Overflow.visible,
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
       children: <Widget>[
-        new AnimatedBuilder(
-          animation: _bubblesFlowAnimation,
-          builder: (context, child) {
-            return new Positioned(
-              bottom: _bubblesFlowAnimation.value,
-              child: new Container(
-                width: 130.0,
-                height: 3 * baseHeight,
-                child: new Image.asset(
-                  "images/bubbles_long.jpg",
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          },
-        ),
-        new Image.asset(
-          "images/challenge_bottle.png",
-          fit: BoxFit.fill,
-        ),
-        new Positioned(
-          child: new RaisedButton(
-            onPressed: () {
-//                  _fillPercentage += 0.1;
-//                  if (_fillPercentage > 1) {
-//                    _fillPercentage = 0.0;
-//                  }
-              _animationController.forward().then((_) =>
-                  _animationController.reset());
-            },
-            child: new Text("KLIK"),
-          ),
-          bottom: 32.0,
-        )
+        _buildBottleFilling(),
+        _buildProgressIndicatorContainer(),
+        _buildBottleOutline(),
+        _buildReceiveButton(),
+        _buildBottomCaption(context),
       ],
+    );
+  }
+
+  Positioned _buildBottomCaption(BuildContext context) {
+    return new Positioned(
+      left: 0.0,
+      right: 0.0,
+      bottom: 8.0,
+      child: new Text(
+        "Gdy butelka się napełni, pierwsze 100 osób, które otrzyma dodatkowe 300 punktów!",
+        textAlign: TextAlign.center,
+        style: Theme
+            .of(context)
+            .textTheme
+            .caption,
+      ),
+    );
+  }
+
+  Transform _buildProgressIndicatorContainer() {
+    return new Transform(
+      transform: new Matrix4.identity()
+        ..scale(0.75),
+      alignment: Alignment.center,
+      child: new Container(
+        transform: new Matrix4.identity()
+          ..scale(1.0, 1 - _fillPercentage),
+        color: const Color(0xFFFAFAFA),
+      ),
+    );
+  }
+
+  AnimatedBuilder _buildBottleFilling() {
+    return new AnimatedBuilder(
+      animation: _bubblesFlowAnimation,
+      builder: (context, child) {
+        return new Positioned(
+          bottom: _bubblesFlowAnimation.value,
+          child: new Container(
+            width: 130.0,
+            height: 3 * baseHeight,
+            child: new Image.asset(
+              "images/bubbles_long.jpg",
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Image _buildBottleOutline() {
+    return new Image.asset(
+      "images/challenge_bottle.png",
+      fit: BoxFit.fill,
+    );
+  }
+
+  Positioned _buildReceiveButton() {
+    return new Positioned(
+      child: new RaisedButton(
+        textColor: Colors.white,
+        onPressed: _fillPercentage > 0.99
+            ? () {
+          setState(() => _fillPercentage = 0.0);
+          print("A $_fillPercentage");
+        }
+            : () {
+          setState(() => _fillPercentage += 0.1);
+          print("B $_fillPercentage");
+        },
+        child: new Text("ODBIERZ NAGRODĘ!"),
+        color: Colors.red,
+      ),
+      top: 32.0,
     );
   }
 }
