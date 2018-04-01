@@ -43,7 +43,7 @@ class AuthService {
 
   Future<FirebaseUser> logInWithFacebook() async {
     final FacebookLoginResult result =
-        await _facebookLogin.logInWithReadPermissions([]);
+    await _facebookLogin.logInWithReadPermissions(['email']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
