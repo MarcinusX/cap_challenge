@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cap_challenge/logic/http_service.dart' show sendBottleCode;
 import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
@@ -22,88 +23,97 @@ class CodeCapState extends State<CodeCap> {
   }
 
   @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Stack(
       children: <Widget>[
         new Center(
-          child: new Hero(
-            tag: "fab-cap",
-            child: new Container(
-              height: 300.0,
-              width: 300.0,
-              child: new Stack(
-                children: <Widget>[
-                  new Image.asset(
-                    "images/cap.png",
-                    fit: BoxFit.fill,
-                  ),
-                  new Center(
-                    child: new Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 68.0),
-                      child: new TextField(
-                        autocorrect: false,
-                        maxLength: 14,
-                        decoration:
-                        new InputDecoration(labelText: "Kod spod nakrętki"),
-                        controller: textController,
-                        onChanged: (text) =>
-                            setState(
-                                    () =>
-                                _shouldShowSubmitButton = text.length == 14),
-                      ),
-                    ),
-                  ),
-                  new Opacity(
-                    opacity: _shouldShowSubmitButton ? 1.0 : 0.0,
-                    child: new Align(
-                      alignment: Alignment.bottomCenter,
-                      child: new Padding(
-                        padding: const EdgeInsets.only(bottom: 72.0),
-                        child: new RaisedButton(
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(16.0),
-                          ),
-                          onPressed: () {},
-                          color: Colors.red,
-                          child: new Text(
-                            "WYŚLIJ KOD",
-                            style: new TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: _buildCap(),
         ),
-        new Align(
-          alignment: Alignment.bottomLeft,
-          child: new Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 72.0),
-            child: new FloatingActionButton(
-              onPressed: () {
-                new QRCodeReader().scan().then((String qrCode) {
-                  if (qrCode != null) {
-                    new Future.delayed(const Duration(milliseconds: 500), () {
-                      Navigator
-                          .of(context)
-                          .pop(new ScannedQRCodeResult(qrCode));
-                    });
-                  }
-                });
-              },
-              child: new Image.asset(
-                "images/qr_code.png",
-                width: 32.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+        _buildQRCodeFab(context),
       ],
+    );
+  }
+
+  Positioned _buildQRCodeFab(BuildContext context) {
+    return new Positioned(
+      left: 16.0,
+      bottom: 72.0,
+      child: new FloatingActionButton(
+        onPressed: () {
+          new QRCodeReader().scan().then((String qrCode) {
+            if (qrCode != null) {
+              new Future.delayed(const Duration(milliseconds: 500), () {
+                Navigator.of(context).pop(new ScannedQRCodeResult(qrCode));
+              });
+            }
+          });
+        },
+        child: new Image.asset(
+          "images/qr_code.png",
+          width: 32.0,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Hero _buildCap() {
+    return new Hero(
+      tag: "fab-cap",
+      child: new Container(
+        height: 300.0,
+        width: 300.0,
+        child: new Stack(
+          children: <Widget>[
+            new Image.asset(
+              "images/cap.png",
+              fit: BoxFit.fill,
+            ),
+            new Center(
+              child: new Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 68.0),
+                child: new TextField(
+                  autocorrect: false,
+                  maxLength: 14,
+                  decoration:
+                  new InputDecoration(labelText: "Kod spod nakrętki"),
+                  controller: textController,
+                  onChanged: (text) =>
+                      setState(
+                              () =>
+                          _shouldShowSubmitButton = text.length == 14),
+                ),
+              ),
+            ),
+            new Opacity(
+              opacity: _shouldShowSubmitButton ? 1.0 : 0.0,
+              child: new Align(
+                alignment: Alignment.topCenter,
+                child: new Padding(
+                  padding: const EdgeInsets.only(top: 72.0),
+                  child: new RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(16.0),
+                    ),
+                    onPressed: () => sendBottleCode("text"),
+                    color: Colors.red,
+                    child: new Text(
+                      "WYŚLIJ KOD",
+                      style: new TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

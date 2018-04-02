@@ -9,3 +9,20 @@ export const OnCreateFunction = functions.auth.user().onCreate((event) => {
         email: event.data.email,
     });
 });
+
+export const AddCapCode = functions.https.onRequest((request, response) => {
+    let uid = request.get("uid");
+    if (request.method === 'POST') {
+        admin.database().ref('users/' + uid + '/bottles/').push({
+            type: "COCA_COLA_500",
+            added: admin.database.ServerValue.TIMESTAMP
+        }).then((value => {
+            response.status(200).send();
+        }), (value) => {
+            response.status(500).send();
+        });
+    } else {
+        response.status(404).send();
+    }
+
+});
