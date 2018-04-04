@@ -1,21 +1,12 @@
+import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/widgets/collection/collection_grid_item.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-DatabaseReference ref;
-
-Map<Bottle, int> bottleCollection = {
-  Bottle.SPRITE_300: 1,
-  Bottle.SPRITE_500: 2,
-  Bottle.ZERO_1L: 1,
-  Bottle.SPRITE_2L: 2,
-  Bottle.COCA_COLA_1L: 3,
-  Bottle.ZERO_300: 1,
-  Bottle.SPRITE_1L: 2,
-  Bottle.LIGHT_300: 3,
-};
 class CollectionPage extends StatefulWidget {
+
+
   @override
   State<StatefulWidget> createState() {
     return new CollectionPageState();
@@ -23,16 +14,25 @@ class CollectionPage extends StatefulWidget {
 }
 
 class CollectionPageState extends State<CollectionPage> {
-
-  String _label = "Collection";
-
+  Map<Bottle, int> bottleCollection = {};
 
   @override
   void initState() {
     super.initState();
-    ref = FirebaseDatabase.instance.reference().child("label");
-    ref.onValue.listen((e) {
-      setState(() => _label = e.snapshot.value);
+    DatabaseReference ref = FirebaseDatabase.instance
+        .reference()
+        .child('users')
+        .child(AuthService.instance.currentUser.uid)
+        .child('bottles');
+    ref.onChildAdded.listen((event) {
+      setState(() {
+        Bottle bottle = new Bottle(event.snapshot.value['type']);
+        if (bottleCollection.containsKey(bottle)) {
+          bottleCollection.update(bottle, (i) => i + 1);
+        } else {
+          bottleCollection.putIfAbsent(bottle, () => 1);
+        }
+      });
     });
   }
 

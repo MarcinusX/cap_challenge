@@ -7,6 +7,28 @@ class Bottle {
   const Bottle._internal(this.bottleName, this.capacity, this.points,
       this.imagePath);
 
+  factory Bottle(String key) {
+    switch (key) {
+    //TODO: Dodać resztę
+      case 'COCA_COLA_250':
+        return COCA_COLA_250;
+      case 'COCA_COLA_300':
+        return COCA_COLA_300;
+      case 'COCA_COLA_500':
+        return COCA_COLA_500;
+      case 'COCA_COLA_1L':
+        return COCA_COLA_1L;
+      case 'COCA_COLA_2L':
+        return COCA_COLA_2L;
+      case 'SPRITE_300':
+        return SPRITE_300;
+      case 'SPRITE_500':
+        return SPRITE_500;
+      default:
+        return null;
+    }
+  }
+
   static const COCA_COLA_300 = const Bottle._internal(
       BottleName.COCA_COLA, Capacity.CAN_300, 50, "images/coca_cola_baner.jpg");
   static const COCA_COLA_250 = const Bottle._internal(BottleName.COCA_COLA,

@@ -14,7 +14,7 @@ sendBottleCode(String code) async {
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.encode({}),
+    body: json.encode({}),
   );
   print(response);
 }

@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:cap_challenge/logic/http_service.dart' show sendBottleCode;
-import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:flutter/material.dart';
-import 'package:qrcode_reader/QRCodeReader.dart';
+//import 'package:qrcode_reader/QRCodeReader.dart';
 
 class CodeCap extends StatefulWidget {
   @override
@@ -30,38 +27,37 @@ class CodeCapState extends State<CodeCap> {
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
-      children: <Widget>[
-        new Center(
-          child: _buildCap(),
-        ),
-        _buildQRCodeFab(context),
-      ],
-    );
-  }
-
-  Positioned _buildQRCodeFab(BuildContext context) {
-    return new Positioned(
-      left: 16.0,
-      bottom: 72.0,
-      child: new FloatingActionButton(
-        onPressed: () {
-          new QRCodeReader().scan().then((String qrCode) {
-            if (qrCode != null) {
-              new Future.delayed(const Duration(milliseconds: 500), () {
-                Navigator.of(context).pop(new ScannedQRCodeResult(qrCode));
-              });
-            }
-          });
-        },
-        child: new Image.asset(
-          "images/qr_code.png",
-          width: 32.0,
-          color: Colors.white,
-        ),
+    return new Material(
+      color: Colors.transparent,
+      child: new Center(
+        child: _buildCap(),
       ),
     );
   }
+
+//
+//  Positioned _buildQRCodeFab(BuildContext context) {
+//    return new Positioned(
+//      left: 16.0,
+//      bottom: 72.0,
+//      child: new FloatingActionButton(
+//        onPressed: () {
+//          new QRCodeReader().scan().then((String qrCode) {
+//            if (qrCode != null) {
+//              new Future.delayed(const Duration(milliseconds: 500), () {
+//                Navigator.of(context).pop(new ScannedQRCodeResult(qrCode));
+//              });
+//            }
+//          });
+//        },
+//        child: new Image.asset(
+//          "images/qr_code.png",
+//          width: 32.0,
+//          color: Colors.white,
+//        ),
+//      ),
+//    );
+//  }
 
   Hero _buildCap() {
     return new Hero(

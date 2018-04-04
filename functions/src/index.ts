@@ -15,7 +15,7 @@ export const AddCapCode = functions.https.onRequest((request, response) => {
     if (request.method === 'POST') {
         admin.database().ref('users/' + uid + '/bottles/').push({
             type: "COCA_COLA_500",
-            added: admin.database.ServerValue.TIMESTAMP
+            addTimestamp: admin.database.ServerValue.TIMESTAMP
         }).then((value => {
             response.status(200).send();
         }), (value) => {
