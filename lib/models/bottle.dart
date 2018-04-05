@@ -9,7 +9,6 @@ class Bottle {
 
   factory Bottle(String key) {
     switch (key) {
-    //TODO: Dodać resztę
       case 'COCA_COLA_250':
         return COCA_COLA_250;
       case 'COCA_COLA_300':
@@ -20,10 +19,46 @@ class Bottle {
         return COCA_COLA_1L;
       case 'COCA_COLA_2L':
         return COCA_COLA_2L;
+      case 'SPRITE_250':
+        return SPRITE_250;
       case 'SPRITE_300':
         return SPRITE_300;
       case 'SPRITE_500':
         return SPRITE_500;
+      case 'SPRITE_1L':
+        return SPRITE_1L;
+      case 'SPRITE_2L':
+        return SPRITE_2L;
+      case 'ZERO_250':
+        return ZERO_250;
+      case 'ZERO_300':
+        return ZERO_300;
+      case 'ZERO_500':
+        return ZERO_500;
+      case 'ZERO_1L':
+        return ZERO_1L;
+      case 'ZERO_2L':
+        return ZERO_2L;
+      case 'LIGHT_250':
+        return LIGHT_250;
+      case 'LIGHT_300':
+        return LIGHT_300;
+      case 'LIGHT_500':
+        return LIGHT_500;
+      case 'LIGHT_1L':
+        return LIGHT_1L;
+      case 'LIGHT_2L':
+        return LIGHT_2L;
+      case 'FANTA_250':
+        return FANTA_250;
+      case 'FANTA_300':
+        return FANTA_300;
+      case 'FANTA_500':
+        return FANTA_500;
+      case 'FANTA_1L':
+        return FANTA_1L;
+      case 'FANTA_2L':
+        return FANTA_2L;
       default:
         return null;
     }

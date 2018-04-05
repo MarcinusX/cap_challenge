@@ -114,6 +114,12 @@ class MainScaffoldState extends State<MainScaffold>
           _onCapClosed();
           if (result is ScannedQRCodeResult) {
             _handleQrCode(result, context);
+          } else if (result is AddedCodeResult) {
+            if (result.isOk) {
+              Scaffold.of(context).showSnackBar(new SnackBar(
+                  content:
+                  new Text("Butelka została dodana do Twojej kolekcji")));
+            }
           }
         });
         _onCapOpened();

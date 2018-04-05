@@ -1,4 +1,5 @@
 import 'package:cap_challenge/logic/http_service.dart' show sendBottleCode;
+import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:flutter/material.dart';
 //import 'package:qrcode_reader/QRCodeReader.dart';
 
@@ -10,18 +11,18 @@ class CodeCap extends StatefulWidget {
 }
 
 class CodeCapState extends State<CodeCap> {
-  TextEditingController textController;
+  TextEditingController _textController;
   bool _shouldShowSubmitButton = false;
 
   @override
   void initState() {
     super.initState();
-    textController = new TextEditingController();
+    _textController = new TextEditingController();
   }
 
   @override
   void dispose() {
-    textController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -79,7 +80,7 @@ class CodeCapState extends State<CodeCap> {
                   maxLength: 14,
                   decoration:
                   new InputDecoration(labelText: "Kod spod nakrętki"),
-                  controller: textController,
+                  controller: _textController,
                   onChanged: (text) =>
                       setState(
                               () =>
@@ -97,7 +98,29 @@ class CodeCapState extends State<CodeCap> {
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(16.0),
                     ),
-                    onPressed: () => sendBottleCode("text"),
+                    onPressed: () =>
+                        sendBottleCode(_textController.text).then((response) {
+                          if (response.statusCode == 200) {
+                            Navigator
+                                .of(context)
+                                .pop(new AddedCodeResult(isOk: true));
+                          } else {
+                            showDialog(
+                              context: context,
+                              child: new AlertDialog(
+                                title: new Text("Ups..."),
+                                content: new Text("coś poszło nie tak"),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: new Text("Zamknij"),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        }),
                     color: Colors.red,
                     child: new Text(
                       "WYŚLIJ KOD",
