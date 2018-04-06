@@ -4,12 +4,15 @@ import 'package:cap_challenge/widgets/challenges/challenge_card.dart';
 import 'package:flutter/material.dart';
 
 class ChallengesPage extends StatelessWidget {
+  final Map<Bottle, int> bottleCollection;
 
+  ChallengesPage(this.bottleCollection);
 
   @override
   Widget build(BuildContext context) {
     return new ListView(
-      children: challenges.map((c) => new ChallengeCard(c)).toList(),
+      children: challenges.map((c) => new ChallengeCard(c, bottleCollection))
+          .toList(),
     );
   }
 }

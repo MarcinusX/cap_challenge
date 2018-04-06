@@ -2,14 +2,18 @@ import 'dart:async';
 
 import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
+import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
 import 'package:cap_challenge/widgets/community/community_page.dart';
 import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class MainScaffold extends StatefulWidget {
+  final Map<Bottle, int> bottleCollection = {};
+
   @override
   State<StatefulWidget> createState() {
     return new MainScaffoldState();
@@ -18,6 +22,7 @@ class MainScaffold extends StatefulWidget {
 
 class MainScaffoldState extends State<MainScaffold>
     with SingleTickerProviderStateMixin {
+
   bool _showFab = true;
   bool _isCapOpened = false;
   int _page = 0;
@@ -27,14 +32,35 @@ class MainScaffoldState extends State<MainScaffold>
       case 0:
         return new TimerPage();
       case 1:
-        return new CollectionPage();
+        return new CollectionPage(widget.bottleCollection);
       case 2:
-        return new ChallengesPage();
+        return new ChallengesPage(widget.bottleCollection);
       case 3:
         return new CommunityPage();
       default:
         return new TimerPage();
     }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    DatabaseReference ref = FirebaseDatabase.instance
+        .reference()
+        .child('users')
+        .child(AuthService.instance.currentUser.uid)
+        .child('bottles');
+    ref.onChildAdded.listen((event) {
+      setState(() {
+        Bottle bottle = new Bottle(event.snapshot.value['type']);
+        if (widget.bottleCollection.containsKey(bottle)) {
+          widget.bottleCollection.update(bottle, (i) => i + 1);
+        } else {
+          widget.bottleCollection.putIfAbsent(bottle, () => 1);
+        }
+      });
+    });
   }
 
   @override

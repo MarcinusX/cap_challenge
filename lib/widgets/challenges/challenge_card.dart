@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class ChallengeCard extends StatelessWidget {
   final Challenge challenge;
+  final Map<Bottle, int> bottleCollection;
 
-  ChallengeCard(this.challenge);
+  ChallengeCard(this.challenge, this.bottleCollection);
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +183,7 @@ class ChallengeCard extends StatelessWidget {
 
   _goToDetails(BuildContext context, Challenge challenge) {
     Navigator.of(context).push(new MaterialPageRoute(
-        builder: (context) => new ChallengeDetailsPage(challenge)));
+        builder: (context) =>
+        new ChallengeDetailsPage(challenge, bottleCollection)));
   }
 }

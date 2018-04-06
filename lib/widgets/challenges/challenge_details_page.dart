@@ -6,24 +6,11 @@ import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
 import 'package:flutter/material.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 
-List<Bottle> bottleCollection = [
-  Bottle.SPRITE_300,
-  Bottle.SPRITE_500,
-  Bottle.ZERO_1L,
-  Bottle.SPRITE_2L,
-  Bottle.COCA_COLA_2L,
-  Bottle.SPRITE_500,
-  Bottle.SPRITE_1L,
-  Bottle.COCA_COLA_1L,
-  Bottle.COCA_COLA_1L,
-  Bottle.SPRITE_2L,
-  Bottle.ZERO_300,
-];
-
 class ChallengeDetailsPage extends StatefulWidget {
   final Challenge challenge;
+  final Map<Bottle, int> bottleCollection;
 
-  ChallengeDetailsPage(this.challenge);
+  ChallengeDetailsPage(this.challenge, this.bottleCollection);
 
   @override
   ChallengeDetailsPageState createState() {
@@ -38,17 +25,19 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new SliverFab(
-        floatingActionButton: _buildFab(bottleCollection, widget.challenge),
+        floatingActionButton:
+        _buildFab(widget.bottleCollection, widget.challenge),
         slivers: <Widget>[
           _buildSliverAppBar(),
           new SliverList(
             delegate: new SliverChildListDelegate(
               <Widget>[
-                _buildMissingBottlesLabel(bottleCollection, widget.challenge),
+                _buildMissingBottlesLabel(
+                    widget.bottleCollection, widget.challenge),
                 _buildDifficultyRow(),
                 _buildPriceRow(),
-              ]..addAll(_buildRequirementsRows(widget.challenge))..addAll(
-                  _buildRequirementsRows(widget.challenge)),
+              ]
+                ..addAll(_buildRequirementsRows(widget.challenge)),
             ),
           ),
         ],
@@ -56,7 +45,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     );
   }
 
-  Widget _buildFab(List<Bottle> collection, Challenge challenge) {
+  Widget _buildFab(Map<Bottle, int> collection, Challenge challenge) {
     if (_canChallengeBeCompleted(collection, challenge)) {
       return new Builder(
         builder: (context) =>
@@ -103,14 +92,12 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         context,
         bottle,
         widget.challenge.requirements[bottle],
-        bottleCollection
-            .where((btl) => btl == bottle)
-            .length,
+        widget.bottleCollection[bottle] ?? 0,
       );
     }).toList();
   }
 
-  Widget _buildMissingBottlesLabel(List<Bottle> collection,
+  Widget _buildMissingBottlesLabel(Map<Bottle, int> collection,
       Challenge challenge) {
     if (_canChallengeBeCompleted(collection, challenge)) {
       return new Container();
@@ -119,23 +106,22 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         padding: new EdgeInsets.all(16.0),
         child: new Text(
           "Brakuje Ci tylko ${_getMissingBottles(
-              bottleCollection, challenge)}!",
+              collection, challenge)}!",
           textAlign: TextAlign.center,
         ),
       );
     }
   }
 
-  bool _canChallengeBeCompleted(List<Bottle> collection, Challenge challenge) {
+  bool _canChallengeBeCompleted(Map<Bottle, int> collection,
+      Challenge challenge) {
     return _getMissingBottles(collection, challenge) == 0;
   }
 
-  int _getMissingBottles(List<Bottle> collection, Challenge challenge) {
+  int _getMissingBottles(Map<Bottle, int> collection, Challenge challenge) {
     int missing = 0;
     challenge.requirements.forEach((bottle, required) {
-      int diff = required - collection
-          .where((bot) => bot == bottle)
-          .length;
+      int diff = required - (collection[bottle] ?? 0);
       if (diff > 0) {
         missing += diff;
       }
