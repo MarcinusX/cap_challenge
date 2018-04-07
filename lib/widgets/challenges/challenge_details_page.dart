@@ -34,7 +34,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
               <Widget>[
                 _buildMissingBottlesLabel(
                     widget.bottleCollection, widget.challenge),
-                _buildDifficultyRow(),
+                //_buildDifficultyRow(),
                 _buildPriceRow(),
               ]
                 ..addAll(_buildRequirementsRows(widget.challenge)),
