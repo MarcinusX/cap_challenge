@@ -28,10 +28,13 @@ class CodeCapState extends State<CodeCap> {
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      color: Colors.transparent,
-      child: new Center(
-        child: _buildCap(),
+    return new GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: new Material(
+        color: Colors.transparent,
+        child: new Center(
+          child: _buildCap(),
+        ),
       ),
     );
   }
