@@ -114,6 +114,7 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
   }
 
   Future<Response> _sendBottleCode(String code) async {
+    FocusScope.of(context).requestFocus(new FocusNode());
     _animationController.forward();
     Response response = await sendBottleCode(code);
     _animationController.stop();
