@@ -126,16 +126,18 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
     } else {
       showDialog(
         context: context,
-        child: new AlertDialog(
-          title: new Text("Ups..."),
-          content: new Text("coś poszło nie tak"),
-          actions: <Widget>[
-            new FlatButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: new Text("Zamknij"),
-            )
-          ],
-        ),
+        builder: (context) {
+          return new AlertDialog(
+            title: new Text("Ups..."),
+            content: new Text("coś poszło nie tak"),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: new Text("Zamknij"),
+              )
+            ],
+          );
+        },
       );
     }
   }
@@ -146,11 +148,11 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
         padding: const EdgeInsets.symmetric(horizontal: 68.0),
         child: new TextField(
           autocorrect: false,
-          maxLength: 14,
+          maxLength: 10,
           decoration: new InputDecoration(labelText: "Kod spod nakrętki"),
           controller: _textController,
           onChanged: (text) =>
-              setState(() => _shouldShowSubmitButton = text.length == 14),
+              setState(() => _shouldShowSubmitButton = text.length == 10),
         ),
       ),
     );

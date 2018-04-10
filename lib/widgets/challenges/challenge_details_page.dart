@@ -62,18 +62,6 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     }
   }
 
-  Padding _buildDifficultyRow() {
-    return new Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: new Row(
-        children: <Widget>[
-          new Text("Poziom trudności:  "),
-          buildDifficultyIndicator(widget.challenge),
-        ],
-      ),
-    );
-  }
-
   Padding _buildPriceRow() {
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

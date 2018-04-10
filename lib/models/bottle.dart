@@ -1,3 +1,6 @@
+import 'package:quiver/core.dart';
+
+
 class Bottle {
   final BottleName bottleName;
   final Capacity capacity;
@@ -121,6 +124,12 @@ class Bottle {
         other is Bottle &&
         other.bottleName == this.bottleName &&
         other.capacity == this.capacity;
+  }
+
+
+  @override
+  int get hashCode {
+    return hash2(bottleName, capacity);
   }
 
   @override

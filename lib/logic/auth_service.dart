@@ -7,7 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService {
   static AuthService instance = new AuthService._();
 
-  AuthService._() {}
+  AuthService._();
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
