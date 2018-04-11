@@ -8,6 +8,7 @@ import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
 import 'package:cap_challenge/widgets/community/community_page.dart';
 import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
+import 'package:cap_challenge/widgets/ranking/ranking_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +37,8 @@ class MainScaffoldState extends State<MainScaffold>
       case 2:
         return new ChallengesPage(widget.bottleCollection);
       case 3:
+        return new RankingPage();
+      case 4:
         return new CommunityPage();
       default:
         return new TimerPage();
@@ -96,13 +99,18 @@ class MainScaffoldState extends State<MainScaffold>
           ),
           new BottomNavigationBarItem(
             backgroundColor: Colors.red,
-            icon: new Icon(Icons.list),
+            icon: new Icon(Icons.view_module),
             title: new Text("Kolekcja"),
           ),
           new BottomNavigationBarItem(
             backgroundColor: Colors.red,
             icon: new Icon(Icons.star),
             title: new Text("Wyzwania"),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.red,
+            icon: new Icon(Icons.swap_vert),
+            title: new Text("Ranking"),
           ),
           new BottomNavigationBarItem(
             backgroundColor: Colors.red,
