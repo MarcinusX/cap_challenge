@@ -23,7 +23,6 @@ class MainScaffold extends StatefulWidget {
 
 class MainScaffoldState extends State<MainScaffold>
     with SingleTickerProviderStateMixin {
-
   bool _showFab = true;
   bool _isCapOpened = false;
   int _page = 0;
@@ -45,6 +44,14 @@ class MainScaffoldState extends State<MainScaffold>
     }
   }
 
+  Widget _buildFab(BuildContext context) {
+    switch (_page) {
+      case 1:
+        return _createHeroFab(context);
+      default:
+        return new Container();
+    }
+  }
 
   @override
   void initState() {
@@ -118,12 +125,12 @@ class MainScaffoldState extends State<MainScaffold>
             title: new Text("Społeczność"),
           ),
         ],
-        type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.shifting,
         onTap: _navigationTapped,
         currentIndex: _page,
       ),
       floatingActionButton: new Builder(
-        builder: (BuildContext context) => _createHeroFab(context),
+        builder: (BuildContext context) => _buildFab(context),
       ),
     );
   }
