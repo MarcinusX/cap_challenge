@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:cap_challenge/models/bottle.dart';
+import 'package:cap_challenge/models/challenge.dart';
 import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 
 class MainScaffold extends StatefulWidget {
   final Map<Bottle, int> bottleCollection = {};
+  final List<Challenge> challenges = [];
 
   @override
   State<StatefulWidget> createState() {
@@ -34,7 +36,7 @@ class MainScaffoldState extends State<MainScaffold>
       case 1:
         return new CollectionPage(widget.bottleCollection);
       case 2:
-        return new ChallengesPage(widget.bottleCollection);
+        return new ChallengesPage(widget.bottleCollection, widget.challenges);
       case 3:
         return new RankingPage();
       case 4:
@@ -56,12 +58,14 @@ class MainScaffoldState extends State<MainScaffold>
   @override
   void initState() {
     super.initState();
-    DatabaseReference ref = FirebaseDatabase.instance
+    DatabaseReference userRef = FirebaseDatabase.instance
         .reference()
         .child('users')
-        .child(AuthService.instance.currentUser.uid)
-        .child('bottles');
-    ref.onChildAdded.listen((event) {
+        .child(AuthService.instance.currentUser.uid);
+    userRef
+        .child('bottles')
+        .onChildAdded
+        .listen((event) {
       setState(() {
         Bottle bottle = new Bottle(event.snapshot.value['type']);
         if (widget.bottleCollection.containsKey(bottle)) {
@@ -70,6 +74,19 @@ class MainScaffoldState extends State<MainScaffold>
           widget.bottleCollection.putIfAbsent(bottle, () => 1);
         }
       });
+    });
+    userRef
+        .child('currentChallenges')
+        .onChildAdded
+        .listen((event) async {
+      DataSnapshot dataSnapshot = await FirebaseDatabase.instance
+          .reference()
+          .child('challenges/${event.snapshot.key}')
+          .once();
+      Challenge challenge = new Challenge.fromMap(
+          dataSnapshot.value, dataSnapshot.key);
+      challenge.isCompleted = event.snapshot.value;
+      setState(() => widget.challenges.add(challenge));
     });
   }
 
