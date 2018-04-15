@@ -36,7 +36,8 @@ class MainScaffoldState extends State<MainScaffold>
       case 1:
         return new CollectionPage(widget.bottleCollection);
       case 2:
-        return new ChallengesPage(widget.bottleCollection, widget.challenges);
+        return new ChallengesPage(
+            widget.bottleCollection, widget.challenges, completeChallenge);
       case 3:
         return new RankingPage();
       case 4:
@@ -55,6 +56,10 @@ class MainScaffoldState extends State<MainScaffold>
     }
   }
 
+  completeChallenge(Challenge challenge) {
+    //TODO
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,17 +69,21 @@ class MainScaffoldState extends State<MainScaffold>
         .child(AuthService.instance.currentUser.uid);
     userRef
         .child('bottles')
-        .onChildAdded
+        .onValue
         .listen((event) {
       setState(() {
-        Bottle bottle = new Bottle(event.snapshot.value['type']);
-        if (widget.bottleCollection.containsKey(bottle)) {
-          widget.bottleCollection.update(bottle, (i) => i + 1);
-        } else {
-          widget.bottleCollection.putIfAbsent(bottle, () => 1);
-        }
+        Map<dynamic, dynamic> bottles = event.snapshot.value;
+        bottles.forEach((key, val) {
+          Bottle bottle = new Bottle(val['type']);
+          if (widget.bottleCollection.containsKey(bottle)) {
+            widget.bottleCollection.update(bottle, (i) => i + 1);
+          } else {
+            widget.bottleCollection.putIfAbsent(bottle, () => 1);
+          }
+        });
       });
     });
+
     userRef
         .child('currentChallenges')
         .onChildAdded
@@ -83,8 +92,8 @@ class MainScaffoldState extends State<MainScaffold>
           .reference()
           .child('challenges/${event.snapshot.key}')
           .once();
-      Challenge challenge = new Challenge.fromMap(
-          dataSnapshot.value, dataSnapshot.key);
+      Challenge challenge =
+      new Challenge.fromMap(dataSnapshot.value, dataSnapshot.key);
       challenge.isCompleted = event.snapshot.value;
       setState(() => widget.challenges.add(challenge));
     });

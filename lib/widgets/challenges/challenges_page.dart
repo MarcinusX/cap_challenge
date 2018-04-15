@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 class ChallengesPage extends StatelessWidget {
   final Map<Bottle, int> bottleCollection;
   final List<Challenge> challenges;
+  final Function(Challenge) completeChallenge;
 
-  ChallengesPage(this.bottleCollection, this.challenges);
+  ChallengesPage(this.bottleCollection, this.challenges,
+      this.completeChallenge);
 
   @override
   Widget build(BuildContext context) {
     return new ListView(
-      children: challenges.map((c) => new ChallengeCard(c, bottleCollection))
+      children: challenges.map((c) =>
+      new ChallengeCard(c, bottleCollection, completeChallenge))
           .toList(),
     );
   }

@@ -51,8 +51,9 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         builder: (context) =>
         new FloatingActionButton(
           onPressed: () {
-            Scaffold.of(context).showSnackBar(new SnackBar(
-                content: new Text("Tak jakby wypełniłeś zadanie")));
+            Navigator.of(context).pop(true);
+//            Scaffold.of(context).showSnackBar(new SnackBar(
+//                content: new Text("Tak jakby wypełniłeś zadanie")));
           },
           child: new Icon(Icons.check),
         ),
