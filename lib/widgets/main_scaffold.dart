@@ -25,6 +25,10 @@ class MainScaffold extends StatefulWidget {
 
 class MainScaffoldState extends State<MainScaffold>
     with SingleTickerProviderStateMixin {
+  DatabaseReference userRef = FirebaseDatabase.instance
+      .reference()
+      .child('users')
+      .child(AuthService.instance.currentUser.uid);
   bool _showFab = true;
   bool _isCapOpened = false;
   int _page = 0;
@@ -57,16 +61,19 @@ class MainScaffoldState extends State<MainScaffold>
   }
 
   completeChallenge(Challenge challenge) {
-    //TODO
+    challenge.requirements.forEach((bottle, quantity) {
+      widget.bottleCollection[bottle] -= quantity;
+    });
+
+    userRef.child('bottles').set(widget.bottleCollection
+        .map((bottle, quantity) => new MapEntry(bottle.dbKey, quantity)));
+
+    userRef.child('currentChallenges/${challenge.key}').set(true);
   }
 
   @override
   void initState() {
     super.initState();
-    DatabaseReference userRef = FirebaseDatabase.instance
-        .reference()
-        .child('users')
-        .child(AuthService.instance.currentUser.uid);
     userRef
         .child('bottles')
         .onValue
@@ -74,11 +81,11 @@ class MainScaffoldState extends State<MainScaffold>
       setState(() {
         Map<dynamic, dynamic> bottles = event.snapshot.value;
         bottles.forEach((key, val) {
-          Bottle bottle = new Bottle(val['type']);
-          if (widget.bottleCollection.containsKey(bottle)) {
-            widget.bottleCollection.update(bottle, (i) => i + 1);
+          Bottle bottle = new Bottle(key);
+          if (val == 0) {
+            widget.bottleCollection.remove(bottle);
           } else {
-            widget.bottleCollection.putIfAbsent(bottle, () => 1);
+            widget.bottleCollection[bottle] = val;
           }
         });
       });
@@ -216,7 +223,7 @@ class MainScaffoldState extends State<MainScaffold>
     setState(() => _isCapOpened = false);
     new Future.delayed(
       const Duration(milliseconds: 5),
-      () => setState(() => _showFab = true),
+          () => setState(() => _showFab = true),
     );
   }
 
@@ -224,13 +231,13 @@ class MainScaffoldState extends State<MainScaffold>
     setState(() => _isCapOpened = true);
     new Future.delayed(
       const Duration(milliseconds: 300),
-      () => setState(
+          () => setState(
             () {
-              if (_isCapOpened) {
-                _showFab = false;
-              }
-            },
-          ),
+          if (_isCapOpened) {
+            _showFab = false;
+          }
+        },
+      ),
     );
   }
 }

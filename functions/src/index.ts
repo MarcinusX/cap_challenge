@@ -34,18 +34,22 @@ export const AddCapCode = functions.https.onRequest((request, response) => {
         const type = types[request.get("code").charAt(0).toLowerCase()];
         const size = sizes[request.get("code").charAt(1).toLowerCase()];
 
-        if (type == null || size == null) {
+        if (type === null || size === null) {
             response.status(400).send("Invalid code");
             return;
         }
 
-        admin.database().ref('users/' + uid + '/bottles/').push({
-            type: type + size,
-            addTimestamp: admin.database.ServerValue.TIMESTAMP
-        }).then((value => {
-            response.status(200).send();
-        }), (value) => {
-            response.status(500).send();
+        const path = 'users/' + uid + '/bottles/' + type + size;
+        let promise = admin.database().ref(path).once('value', (snapshot) => {
+            let quantity = 0;
+            if (snapshot.exists()) {
+                quantity = snapshot.val();
+            }
+            admin.database().ref(path).set(quantity + 1).then((value => {
+                response.status(200).send();
+            }), (value) => {
+                response.status(500).send();
+            });
         });
     } else {
         response.status(404).send();

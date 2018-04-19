@@ -188,6 +188,10 @@ class ChallengeCard extends StatelessWidget {
         .push(new MaterialPageRoute<bool>(
         builder: (context) =>
         new ChallengeDetailsPage(challenge, bottleCollection)))
-        .then((challengeCompleted) => this.completeChallenge(challenge));
+        .then((challengeCompleted) {
+      if (challengeCompleted ?? false) {
+        this.completeChallenge(challenge);
+      }
+    });
   }
 }

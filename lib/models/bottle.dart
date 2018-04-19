@@ -1,6 +1,5 @@
 import 'package:quiver/core.dart';
 
-
 class Bottle {
   final BottleName bottleName;
   final Capacity capacity;
@@ -67,6 +66,8 @@ class Bottle {
     }
   }
 
+  String get dbKey => types[bottleName] + sizes[capacity];
+
   static const COCA_COLA_300 = const Bottle._internal(
       BottleName.COCA_COLA, Capacity.CAN_300, 50, "images/coca_cola_baner.jpg");
   static const COCA_COLA_250 = const Bottle._internal(BottleName.COCA_COLA,
@@ -79,26 +80,26 @@ class Bottle {
       Capacity.PLASTIC_2L, 1000, "images/coca_cola_baner.jpg");
   static const SPRITE_300 = const Bottle._internal(
       BottleName.SPRITE, Capacity.CAN_300, 50, "images/sprite_baner.jpeg");
-  static const SPRITE_250 = const Bottle._internal(BottleName.SPRITE,
-      Capacity.PLASTIC_250, 100, "images/sprite_baner.jpeg");
-  static const SPRITE_500 = const Bottle._internal(BottleName.SPRITE,
-      Capacity.PLASTIC_500, 200, "images/sprite_baner.jpeg");
-  static const SPRITE_1L = const Bottle._internal(BottleName.SPRITE,
-      Capacity.PLASTIC_1L, 450, "images/sprite_baner.jpeg");
-  static const SPRITE_2L = const Bottle._internal(BottleName.SPRITE,
-      Capacity.PLASTIC_2L, 1000, "images/sprite_baner.jpeg");
+  static const SPRITE_250 = const Bottle._internal(
+      BottleName.SPRITE, Capacity.PLASTIC_250, 100, "images/sprite_baner.jpeg");
+  static const SPRITE_500 = const Bottle._internal(
+      BottleName.SPRITE, Capacity.PLASTIC_500, 200, "images/sprite_baner.jpeg");
+  static const SPRITE_1L = const Bottle._internal(
+      BottleName.SPRITE, Capacity.PLASTIC_1L, 450, "images/sprite_baner.jpeg");
+  static const SPRITE_2L = const Bottle._internal(
+      BottleName.SPRITE, Capacity.PLASTIC_2L, 1000, "images/sprite_baner.jpeg");
   static const FANTA_300 = const Bottle._internal(
       BottleName.FANTA, Capacity.CAN_300, 50, "images/fanta_baner.jpg");
-  static const FANTA_250 = const Bottle._internal(BottleName.FANTA,
-      Capacity.PLASTIC_250, 100, "images/fanta_baner.jpg");
-  static const FANTA_500 = const Bottle._internal(BottleName.FANTA,
-      Capacity.PLASTIC_500, 200, "images/fanta_baner.jpg");
-  static const FANTA_1L = const Bottle._internal(BottleName.FANTA,
-      Capacity.PLASTIC_1L, 450, "images/fanta_baner.jpg");
-  static const FANTA_2L = const Bottle._internal(BottleName.FANTA,
-      Capacity.PLASTIC_2L, 1000, "images/fanta_baner.jpg");
-  static const ZERO_300 = const Bottle._internal(BottleName.COCA_COLA_ZERO,
-      Capacity.CAN_300, 50, "images/coke_zero.png");
+  static const FANTA_250 = const Bottle._internal(
+      BottleName.FANTA, Capacity.PLASTIC_250, 100, "images/fanta_baner.jpg");
+  static const FANTA_500 = const Bottle._internal(
+      BottleName.FANTA, Capacity.PLASTIC_500, 200, "images/fanta_baner.jpg");
+  static const FANTA_1L = const Bottle._internal(
+      BottleName.FANTA, Capacity.PLASTIC_1L, 450, "images/fanta_baner.jpg");
+  static const FANTA_2L = const Bottle._internal(
+      BottleName.FANTA, Capacity.PLASTIC_2L, 1000, "images/fanta_baner.jpg");
+  static const ZERO_300 = const Bottle._internal(
+      BottleName.COCA_COLA_ZERO, Capacity.CAN_300, 50, "images/coke_zero.png");
   static const ZERO_250 = const Bottle._internal(BottleName.COCA_COLA_ZERO,
       Capacity.PLASTIC_250, 100, "images/coke_zero.png");
   static const ZERO_500 = const Bottle._internal(BottleName.COCA_COLA_ZERO,
@@ -126,7 +127,6 @@ class Bottle {
         other.capacity == this.capacity;
   }
 
-
   @override
   int get hashCode {
     return hash2(bottleName, capacity);
@@ -139,6 +139,22 @@ class Bottle {
         bottleCapacityToLongString(capacity);
   }
 }
+
+const Map<BottleName, String> types = {
+  BottleName.COCA_COLA: 'COCA_COLA',
+  BottleName.SPRITE: 'SPRITE',
+  BottleName.FANTA: 'FANTA',
+  BottleName.COCA_COLA_ZERO: 'ZERO',
+  BottleName.COCA_COLA_LIGHT: 'LIGHT',
+};
+
+const Map<Capacity, String> sizes = {
+  Capacity.PLASTIC_250: '_250',
+  Capacity.CAN_300: '_300',
+  Capacity.PLASTIC_500: '_500',
+  Capacity.PLASTIC_1L: '_1L',
+  Capacity.PLASTIC_2L: '_2L'
+};
 
 enum BottleName {
   COCA_COLA,
