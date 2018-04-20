@@ -94,32 +94,64 @@ class ChallengeCard extends StatelessWidget {
   }
 
   Widget _buildImageStack(BuildContext context) {
+    List<Widget> stackChildren = <Widget>[
+      new Hero(
+        tag: "challenge_image_${challenge.name}",
+        child: new Image.network(
+          challenge.photoUrl,
+          height: 180.0,
+          fit: BoxFit.cover,
+        ),
+      ),
+      new Positioned(
+        bottom: 0.0,
+        left: 0.0,
+        right: 0.0,
+        child: _buildShade(context, challenge),
+      ),
+      new Positioned(
+        left: 0.0,
+        right: 0.0,
+        bottom: 0.0,
+        child: _buildTitle(challenge, context),
+      ),
+    ];
+
+    if (challenge.isCompleted) {
+      stackChildren.addAll([
+        new Positioned.fill(
+          child: new Container(
+            decoration: new BoxDecoration(color: Colors.grey.withAlpha(220)),
+          ),
+        ),
+        Positioned.fill(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(
+                "Wykonano!",
+                style: new TextStyle(fontSize: 28.0, color: Colors.white),
+              ),
+              new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 40.0,
+                ),
+              )
+            ],
+          ),
+        )
+      ]);
+    }
+
     return new GestureDetector(
       onTap: () => _goToDetails(context, challenge),
       child: new Stack(
         fit: StackFit.passthrough,
-        children: <Widget>[
-          new Hero(
-            tag: "challenge_image_${challenge.name}",
-            child: new Image.network(
-              challenge.photoUrl,
-              height: 180.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-          new Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: _buildShade(context, challenge),
-          ),
-          new Positioned(
-            left: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            child: _buildTitle(challenge, context),
-          ),
-        ],
+        children: stackChildren,
       ),
     );
   }
@@ -186,8 +218,8 @@ class ChallengeCard extends StatelessWidget {
     Navigator
         .of(context)
         .push(new MaterialPageRoute<bool>(
-        builder: (context) =>
-        new ChallengeDetailsPage(challenge, bottleCollection)))
+            builder: (context) =>
+                new ChallengeDetailsPage(challenge, bottleCollection)))
         .then((challengeCompleted) {
       if (challengeCompleted ?? false) {
         this.completeChallenge(challenge);

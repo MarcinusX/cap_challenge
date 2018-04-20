@@ -8,14 +8,19 @@ class ChallengesPage extends StatelessWidget {
   final List<Challenge> challenges;
   final Function(Challenge) completeChallenge;
 
-  ChallengesPage(this.bottleCollection, this.challenges,
-      this.completeChallenge);
+  ChallengesPage(
+      this.bottleCollection, this.challenges, this.completeChallenge);
 
   @override
   Widget build(BuildContext context) {
     return new ListView(
-      children: challenges.map((c) =>
-      new ChallengeCard(c, bottleCollection, completeChallenge))
+      children: challenges
+          .map((c) => new ChallengeCard(c, bottleCollection, (challenge) {
+                Scaffold.of(context).showSnackBar(new SnackBar(
+                      content: new Text("Wykonano zadanie"),
+                    ));
+                completeChallenge(challenge);
+              }))
           .toList(),
     );
   }

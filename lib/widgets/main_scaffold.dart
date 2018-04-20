@@ -74,35 +74,44 @@ class MainScaffoldState extends State<MainScaffold>
   @override
   void initState() {
     super.initState();
-    userRef
-        .child('bottles')
-        .onValue
-        .listen((event) {
-      setState(() {
-        Map<dynamic, dynamic> bottles = event.snapshot.value;
-        bottles.forEach((key, val) {
-          Bottle bottle = new Bottle(key);
-          if (val == 0) {
-            widget.bottleCollection.remove(bottle);
-          } else {
-            widget.bottleCollection[bottle] = val;
-          }
-        });
-      });
-    });
-
+    userRef.child('bottles').onValue.listen(_onBottlesValue);
+    userRef.child('currentChallenges').onChildAdded.listen(_onChallengeAdded);
     userRef
         .child('currentChallenges')
-        .onChildAdded
-        .listen((event) async {
-      DataSnapshot dataSnapshot = await FirebaseDatabase.instance
-          .reference()
-          .child('challenges/${event.snapshot.key}')
-          .once();
-      Challenge challenge =
-      new Challenge.fromMap(dataSnapshot.value, dataSnapshot.key);
-      challenge.isCompleted = event.snapshot.value;
-      setState(() => widget.challenges.add(challenge));
+        .onChildChanged
+        .listen(_onChallengeChanged);
+  }
+
+  void _onChallengeChanged(event) {
+    setState(() {
+      widget.challenges
+          .singleWhere((challenge) => challenge.key == event.snapshot.key)
+          .isCompleted = event.snapshot.value;
+    });
+  }
+
+  void _onChallengeAdded(event) async {
+    DataSnapshot dataSnapshot = await FirebaseDatabase.instance
+        .reference()
+        .child('challenges/${event.snapshot.key}')
+        .once();
+    Challenge challenge =
+        new Challenge.fromMap(dataSnapshot.value, dataSnapshot.key);
+    challenge.isCompleted = event.snapshot.value;
+    setState(() => widget.challenges.add(challenge));
+  }
+
+  void _onBottlesValue(event) {
+    setState(() {
+      Map<dynamic, dynamic> bottles = event.snapshot.value;
+      bottles.forEach((key, val) {
+        Bottle bottle = new Bottle(key);
+        if (val == 0) {
+          widget.bottleCollection.remove(bottle);
+        } else {
+          widget.bottleCollection[bottle] = val;
+        }
+      });
     });
   }
 
@@ -118,13 +127,12 @@ class MainScaffoldState extends State<MainScaffold>
               child: new CircleAvatar(
                 radius: 22.0,
                 backgroundImage:
-                new NetworkImage(AuthService.instance.currentUser.photoUrl),
+                    new NetworkImage(AuthService.instance.currentUser.photoUrl),
               ),
             ),
             onTap: () {
               AuthService.instance.logout().then(
-                      (_) =>
-                      Navigator.of(context).pushReplacementNamed("login"));
+                  (_) => Navigator.of(context).pushReplacementNamed("login"));
             },
           )
         ],
@@ -192,7 +200,7 @@ class MainScaffoldState extends State<MainScaffold>
             if (result.isOk) {
               Scaffold.of(context).showSnackBar(new SnackBar(
                   content:
-                  new Text("Butelka została dodana do Twojej kolekcji")));
+                      new Text("Butelka została dodana do Twojej kolekcji")));
             }
           }
         });
@@ -215,15 +223,15 @@ class MainScaffoldState extends State<MainScaffold>
 
   void _handleQrCode(ScannedQRCodeResult result, BuildContext context) {
     Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text(result.qrCode),
-    ));
+          content: new Text(result.qrCode),
+        ));
   }
 
   _onCapClosed() {
     setState(() => _isCapOpened = false);
     new Future.delayed(
       const Duration(milliseconds: 5),
-          () => setState(() => _showFab = true),
+      () => setState(() => _showFab = true),
     );
   }
 
@@ -231,13 +239,13 @@ class MainScaffoldState extends State<MainScaffold>
     setState(() => _isCapOpened = true);
     new Future.delayed(
       const Duration(milliseconds: 300),
-          () => setState(
+      () => setState(
             () {
-          if (_isCapOpened) {
-            _showFab = false;
-          }
-        },
-      ),
+              if (_isCapOpened) {
+                _showFab = false;
+              }
+            },
+          ),
     );
   }
 }

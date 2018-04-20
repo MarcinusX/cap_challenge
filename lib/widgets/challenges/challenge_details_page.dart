@@ -26,18 +26,18 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     return new Scaffold(
       body: new SliverFab(
         floatingActionButton:
-        _buildFab(widget.bottleCollection, widget.challenge),
+            _buildFab(widget.bottleCollection, widget.challenge),
         slivers: <Widget>[
           _buildSliverAppBar(),
           new SliverList(
             delegate: new SliverChildListDelegate(
               <Widget>[
+                _buildCompletedLabel(widget.challenge.isCompleted),
                 _buildMissingBottlesLabel(
                     widget.bottleCollection, widget.challenge),
                 //_buildDifficultyRow(),
                 _buildPriceRow(),
-              ]
-                ..addAll(_buildRequirementsRows(widget.challenge)),
+              ]..addAll(_buildRequirementsRows(widget.challenge)),
             ),
           ),
         ],
@@ -46,17 +46,15 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   }
 
   Widget _buildFab(Map<Bottle, int> collection, Challenge challenge) {
-    if (_canChallengeBeCompleted(collection, challenge)) {
+    if (_canChallengeBeCompleted(collection, challenge) &&
+        !challenge.isCompleted) {
       return new Builder(
-        builder: (context) =>
-        new FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pop(true);
-//            Scaffold.of(context).showSnackBar(new SnackBar(
-//                content: new Text("Tak jakby wypełniłeś zadanie")));
-          },
-          child: new Icon(Icons.check),
-        ),
+        builder: (context) => new FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: new Icon(Icons.check),
+            ),
       );
     } else {
       return new Container();
@@ -86,8 +84,8 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     }).toList();
   }
 
-  Widget _buildMissingBottlesLabel(Map<Bottle, int> collection,
-      Challenge challenge) {
+  Widget _buildMissingBottlesLabel(
+      Map<Bottle, int> collection, Challenge challenge) {
     if (_canChallengeBeCompleted(collection, challenge)) {
       return new Container();
     } else {
@@ -102,8 +100,8 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     }
   }
 
-  bool _canChallengeBeCompleted(Map<Bottle, int> collection,
-      Challenge challenge) {
+  bool _canChallengeBeCompleted(
+      Map<Bottle, int> collection, Challenge challenge) {
     return _getMissingBottles(collection, challenge) == 0;
   }
 
@@ -118,8 +116,8 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     return missing;
   }
 
-  Widget _buildRequirementRow(BuildContext context, Bottle bottle, int required,
-      int current) {
+  Widget _buildRequirementRow(
+      BuildContext context, Bottle bottle, int required, int current) {
     return new ListTile(
       title: new Text(bottleNameToString(bottle.bottleName)),
       subtitle: new Text(bottleCapacityToLongString(bottle.capacity)),
@@ -128,29 +126,31 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   }
 
   Widget _buildProgressIndicator(int required, int current) {
+    if (widget.challenge.isCompleted) {
+      current = required;
+    }
     int viewCurrent = math.min(current, required);
     int missing = required - viewCurrent;
     List<Widget> filledBottles = new Iterable.generate(
       viewCurrent,
-          (i) =>
-      new Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: new Image.asset(
-          "images/bottle_filled.png",
-          height: _rowHeight,
-        ),
-      ),
+      (i) => new Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: new Image.asset(
+              "images/bottle_filled.png",
+              height: _rowHeight,
+              color: widget.challenge.isCompleted ? Colors.green : Colors.black,
+            ),
+          ),
     ).toList();
     List<Widget> emptyBottles = new Iterable.generate(
       missing,
-          (i) =>
-      new Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: new Image.asset(
-          "images/bottle_empty.png",
-          height: _rowHeight,
-        ),
-      ),
+      (i) => new Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: new Image.asset(
+              "images/bottle_empty.png",
+              height: _rowHeight,
+            ),
+          ),
     ).toList();
     return new Row(
       children: filledBottles..addAll(emptyBottles),
@@ -205,5 +205,29 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildCompletedLabel(bool isCompleted) {
+    if (isCompleted) {
+      return new Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: new Row(
+          children: <Widget>[
+            new Icon(Icons.check, color: Colors.green),
+            new Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: new Text(
+                "Wyzwanie wykonane!",
+                style: new TextStyle(color: Colors.green, fontSize: 24.0),
+              ),
+            ),
+            new Icon(Icons.check, color: Colors.green),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      );
+    } else {
+      return new Container();
+    }
   }
 }
