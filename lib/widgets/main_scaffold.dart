@@ -31,6 +31,7 @@ class MainScaffoldState extends State<MainScaffold>
       .child(AuthService.instance.currentUser.uid);
   bool _showFab = true;
   bool _isCapOpened = false;
+  int points = 1200;
   int _page = 0;
 
   Widget _buildBody() {
@@ -121,6 +122,17 @@ class MainScaffoldState extends State<MainScaffold>
       appBar: new AppBar(
         title: new Text("Cap challenge"),
         actions: <Widget>[
+          new Center(
+              child: Row(
+            children: <Widget>[
+              new Text(
+                "$points",
+                style:
+                    new TextStyle(fontSize: 22.0, fontWeight: FontWeight.w500),
+              ),
+              new Text("pkt"),
+            ],
+          )),
           new GestureDetector(
             child: new Padding(
               padding: const EdgeInsets.all(6.0),
@@ -134,7 +146,7 @@ class MainScaffoldState extends State<MainScaffold>
               AuthService.instance.logout().then(
                   (_) => Navigator.of(context).pushReplacementNamed("login"));
             },
-          )
+          ),
         ],
       ),
       body: _buildBody(),
