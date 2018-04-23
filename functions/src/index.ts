@@ -43,6 +43,7 @@ export const AddCapCode = functions.https.onRequest((request, response) => {
 
         const type = types[typeChar];
         const size = sizes[sizeChar];
+        const name = type + size;
 
         if (type === null || size === null) {
             response.status(400).send("Invalid code");
@@ -50,21 +51,29 @@ export const AddCapCode = functions.https.onRequest((request, response) => {
         }
 
         const path = 'users/' + uid;//+ '/bottles/' + type + size;
-        return admin.database().ref(path).once('value', (snapshot) => {
-            const val = snapshot.val();
-            let bottleQuantity = val.bottles[type + size];
-            if (bottleQuantity === null) {
-                bottleQuantity = 0;
-            }
-            let points = 0;
-            if (snapshot.hasChild('points')) {
-                points = val.points;
-            }
-            return Promise.all([
-                admin.database().ref(path + '/bottles/' + type + size).update(bottleQuantity + 1),
-                admin.database().ref(path + '/points').update(points + pointSheet[sizeChar])]
-            ).then((value) => response.status(200).send());
-        });
+        return Promise.all([
+            admin.database().ref(path + '/bottles/' + name).once('value', (snapshot) => {
+                let quantity = 1;
+                if (snapshot.exists()) {
+                    quantity += snapshot.val();
+                }
+                return admin.database().ref(path + '/bottles/' + name)
+                    .set(quantity)
+                    .then(value => response.status(200).send(),
+                        reason => response.status(500).send());
+            }),
+            admin.database().ref(path + '/points').once('value', (snapshot) => {
+                let points = pointSheet[sizeChar];
+                if (snapshot.exists()) {
+                    points += snapshot.val();
+                }
+                return admin.database().ref(path + '/points')
+                    .set(points)
+                    .then(value => response.status(200).send(),
+                        reason => response.status(500).send());
+            }),
+        ]).then(value => response.status(200).send(),
+            reason => response.status(500).send());
     } else {
         response.status(404).send();
         return null;
