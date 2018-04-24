@@ -31,7 +31,7 @@ class MainScaffoldState extends State<MainScaffold>
       .child(AuthService.instance.currentUser.uid);
   bool _showFab = true;
   bool _isCapOpened = false;
-  int points = 1200;
+  int points = 0;
   int _page = 0;
 
   Widget _buildBody() {
@@ -81,9 +81,10 @@ class MainScaffoldState extends State<MainScaffold>
         .child('currentChallenges')
         .onChildChanged
         .listen(_onChallengeChanged);
+    userRef.child('points').onValue.listen(_onPointsValue);
   }
 
-  void _onChallengeChanged(event) {
+  void _onChallengeChanged(Event event) {
     setState(() {
       widget.challenges
           .singleWhere((challenge) => challenge.key == event.snapshot.key)
@@ -91,7 +92,13 @@ class MainScaffoldState extends State<MainScaffold>
     });
   }
 
-  void _onChallengeAdded(event) async {
+  void _onPointsValue(Event event) {
+    setState(() {
+      points = event.snapshot.value;
+    });
+  }
+
+  void _onChallengeAdded(Event event) async {
     DataSnapshot dataSnapshot = await FirebaseDatabase.instance
         .reference()
         .child('challenges/${event.snapshot.key}')
