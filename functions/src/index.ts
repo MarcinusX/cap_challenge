@@ -31,6 +31,7 @@ export const OnCreateFunction = functions.auth.user().onCreate((event) => {
     return admin.database().ref('users/' + event.data.uid).set({
         username: event.data.displayName,
         email: event.data.email,
+        points: 0,
     });
 });
 

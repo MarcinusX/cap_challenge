@@ -4,6 +4,7 @@ import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
+import 'package:cap_challenge/models/user.dart';
 import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 class MainScaffold extends StatefulWidget {
   final Map<Bottle, int> bottleCollection = {};
   final List<Challenge> challenges = [];
+  final List<User> usersRanking = [];
 
   @override
   State<StatefulWidget> createState() {
@@ -44,7 +46,7 @@ class MainScaffoldState extends State<MainScaffold>
         return new ChallengesPage(
             widget.bottleCollection, widget.challenges, completeChallenge);
       case 3:
-        return new RankingPage();
+        return new RankingPage(ranking: widget.usersRanking);
       case 4:
         return new CommunityPage();
       default:
@@ -82,6 +84,18 @@ class MainScaffoldState extends State<MainScaffold>
         .onChildChanged
         .listen(_onChallengeChanged);
     userRef.child('points').onValue.listen(_onPointsValue);
+    FirebaseDatabase.instance
+        .reference()
+        .child('users')
+        .orderByChild('points')
+        .limitToFirst(20)
+        .onChildAdded
+        .listen((event) {
+      User user = User.fromMap(event.snapshot.value);
+      setState(() {
+        widget.usersRanking.add(user);
+      });
+    });
   }
 
   void _onChallengeChanged(Event event) {
@@ -112,7 +126,7 @@ class MainScaffoldState extends State<MainScaffold>
   void _onBottlesValue(event) {
     setState(() {
       Map<dynamic, dynamic> bottles = event.snapshot.value;
-      bottles.forEach((key, val) {
+      bottles?.forEach((key, val) {
         Bottle bottle = new Bottle(key);
         if (val == 0) {
           widget.bottleCollection.remove(bottle);
