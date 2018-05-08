@@ -88,13 +88,15 @@ class MainScaffoldState extends State<MainScaffold>
         .reference()
         .child('users')
         .orderByChild('points')
-        .limitToFirst(20)
+        .limitToLast(20)
         .onChildAdded
-        .listen((event) {
-      User user = User.fromMap(event.snapshot.value);
-      setState(() {
-        widget.usersRanking.add(user);
-      });
+        .listen(_onUserInRankingAdded);
+  }
+
+  void _onUserInRankingAdded(Event event) {
+    User user = User.fromMap(event.snapshot.value);
+    setState(() {
+      widget.usersRanking.insert(0, user);
     });
   }
 
