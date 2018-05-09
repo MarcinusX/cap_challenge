@@ -22,6 +22,7 @@ class LoginPage extends StatelessWidget {
               "images/coca_family.png",
               fit: BoxFit.fill,
             )),
+        buildShade(context),
         new Center(
           child: new Column(
             children: <Widget>[
@@ -31,11 +32,10 @@ class LoginPage extends StatelessWidget {
                 child: new Text(
                   "Cap Challenge",
                   style: Theme.of(context).textTheme.display2.copyWith(
-                        color: MediaQuery.of(context).orientation ==
-                                Orientation.portrait
-                            ? Colors.white
-                            : Colors.black,
+                        color: Colors.white,
                         fontFamily: "Marker",
+                        decorationColor: Colors.black,
+                        decorationStyle: TextDecorationStyle.dotted,
                       ),
                 ),
               ),
@@ -57,6 +57,24 @@ class LoginPage extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget buildShade(BuildContext context) {
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      return new Container();
+    } else {
+      return new Positioned.fill(
+        child: new DecoratedBox(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [Colors.red.withAlpha(120), Colors.transparent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   _loginWithFacebook(BuildContext context) async {
