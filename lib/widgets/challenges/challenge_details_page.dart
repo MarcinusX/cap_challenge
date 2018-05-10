@@ -66,7 +66,10 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: new Row(
         children: <Widget>[
-          new Text("Nagroda:  "),
+          new Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: new Text("Nagroda:"),
+          ),
           getRewardView(widget.challenge),
         ],
       ),
@@ -138,7 +141,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
             child: new Image.asset(
               "images/bottle_filled.png",
               height: _rowHeight,
-              color: widget.challenge.isCompleted ? Colors.green : Colors.black,
+              color: widget.challenge.isCompleted ? Colors.grey : Colors.black,
             ),
           ),
     ).toList();

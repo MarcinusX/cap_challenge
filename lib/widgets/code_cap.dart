@@ -99,7 +99,7 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
         padding: const EdgeInsets.only(top: 72.0),
         child: new RaisedButton(
           shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(16.0),
+            borderRadius: new BorderRadius.circular(24.0),
           ),
           onPressed: () =>
               _sendBottleCode(_textController.text).then(_handleSubmitResponse),

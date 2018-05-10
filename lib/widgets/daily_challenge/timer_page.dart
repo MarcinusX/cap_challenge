@@ -67,7 +67,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       right: 0.0,
       bottom: 8.0,
       child: new Text(
-        "Gdy butelka się napełni, pierwsze 100 osób, które otrzyma dodatkowe 300 punktów!",
+        "Gdy butelka się napełni odbierz nagrodę,\na pierwsze 100 osób otrzyma dodatkowe 300 punktów!",
         textAlign: TextAlign.center,
         style: Theme
             .of(context)
@@ -119,6 +119,9 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   Positioned _buildReceiveButton() {
     return new Positioned(
       child: new RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24.0)),
+        ),
         textColor: Colors.white,
         onPressed: _fillPercentage > 0.99
             ? () {
@@ -132,7 +135,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
         child: new Text("ODBIERZ NAGRODĘ!"),
         color: Colors.red,
       ),
-      top: 32.0,
+      top: 18.0,
     );
   }
 }

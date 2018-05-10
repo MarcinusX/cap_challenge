@@ -14,6 +14,9 @@ class CollectionGridItem extends StatelessWidget {
         new Padding(
           padding: const EdgeInsets.all(2.0),
           child: new Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            ),
             child: new Stack(
               alignment: Alignment.center,
               children: <Widget>[

@@ -89,14 +89,18 @@ class MainScaffoldState extends State<MainScaffold>
         .child('users')
         .orderByChild('points')
         .limitToLast(20)
-        .onChildAdded
-        .listen(_onUserInRankingAdded);
+          ..onValue.listen(_onUsersInRanking);
   }
 
-  void _onUserInRankingAdded(Event event) {
-    User user = User.fromMap(event.snapshot.value);
+  void _onUsersInRanking(Event event) {
+    widget.usersRanking.clear();
+    (event.snapshot.value as Map<dynamic, dynamic>).forEach((key, val) {
+      User user = User.fromMap(val);
+      widget.usersRanking.add(user);
+
+    });
     setState(() {
-      widget.usersRanking.insert(0, user);
+      widget.usersRanking.sort((u1, u2) => u2.points.compareTo(u1.points));
     });
   }
 
@@ -143,6 +147,7 @@ class MainScaffoldState extends State<MainScaffold>
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        elevation: 0.0,
         title: new Text("Cap challenge"),
         actions: <Widget>[
           new Center(
@@ -172,7 +177,14 @@ class MainScaffoldState extends State<MainScaffold>
           ),
         ],
       ),
-      body: _buildBody(),
+      body: new Material(
+        elevation: 0.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24.0)),
+        ),
+        child: _buildBody(),
+      ),
+      backgroundColor: Colors.red,
       bottomNavigationBar: new BottomNavigationBar(
         items: [
           new BottomNavigationBarItem(

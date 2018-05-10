@@ -14,8 +14,11 @@ class ChallengeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: new Card(
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(12.0),
+        ),
         elevation: 8.0,
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,16 +38,14 @@ class ChallengeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildDifficultyIndicator(challenge),
-              ),
+              _buildNeededBottles(context),
               new Expanded(child: new Container()),
               getRewardView(challenge),
             ],
           ),
-          _buildNeededBottles(context),
+
           _buildBottomButtons(context),
         ],
       ),
