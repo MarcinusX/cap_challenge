@@ -5,11 +5,11 @@ dependencies:
   flutter:
     sdk: flutter
 #  qrcode_reader: "0.3.3"
-  google_sign_in: "^3.0.0"
-  firebase_auth: "^0.5.0"
-  firebase_database: "^0.4.0"
+  google_sign_in: "^3.0.3"
+  firebase_auth: "^0.5.10"
+  firebase_database: "^1.0.0"
   cupertino_icons: ^0.1.0
-  flutter_facebook_login: "^1.0.3"
+  flutter_facebook_login: "^1.1.1"
   sliver_fab: "^0.1.0"
 
 dev_dependencies:
