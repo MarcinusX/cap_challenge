@@ -46,7 +46,7 @@ export const AddCapCode = functions.https.onRequest((request, response) => {
         const size = sizes[sizeChar];
         const name = type + size;
 
-        if (type === null || size === null) {
+        if (type == null || size == null) {
             response.status(400).send("Invalid code");
             return null;
         }

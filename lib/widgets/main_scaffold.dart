@@ -8,7 +8,6 @@ import 'package:cap_challenge/models/user.dart';
 import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
-import 'package:cap_challenge/widgets/community/community_page.dart';
 import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
 import 'package:cap_challenge/widgets/ranking/ranking_page.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -47,8 +46,8 @@ class MainScaffoldState extends State<MainScaffold>
             widget.bottleCollection, widget.challenges, completeChallenge);
       case 3:
         return new RankingPage(ranking: widget.usersRanking);
-      case 4:
-        return new CommunityPage();
+//      case 4:
+//        return new CommunityPage();
       default:
         return new TimerPage();
     }
@@ -180,7 +179,7 @@ class MainScaffoldState extends State<MainScaffold>
       body: new Material(
         elevation: 0.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24.0)),
+          borderRadius: new BorderRadius.vertical(top: Radius.circular(24.0)),
         ),
         child: _buildBody(),
       ),
@@ -207,13 +206,13 @@ class MainScaffoldState extends State<MainScaffold>
             icon: new Icon(Icons.swap_vert),
             title: new Text("Ranking"),
           ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: new Icon(Icons.people),
-            title: new Text("Społeczność"),
-          ),
+//          new BottomNavigationBarItem(
+//            backgroundColor: Colors.red,
+//            icon: new Icon(Icons.people),
+//            title: new Text("Społeczność"),
+//          ),
         ],
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         onTap: _navigationTapped,
         currentIndex: _page,
       ),

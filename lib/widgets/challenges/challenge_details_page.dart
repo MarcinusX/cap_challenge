@@ -105,7 +105,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
 
   bool _canChallengeBeCompleted(
       Map<Bottle, int> collection, Challenge challenge) {
-    return _getMissingBottles(collection, challenge) == 0;
+    return challenge.isCompleted || _getMissingBottles(collection, challenge) == 0;
   }
 
   int _getMissingBottles(Map<Bottle, int> collection, Challenge challenge) {

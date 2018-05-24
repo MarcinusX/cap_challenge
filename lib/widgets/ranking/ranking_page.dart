@@ -10,6 +10,7 @@ class RankingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView.builder(
       padding: new EdgeInsets.only(top: 8.0),
+      itemCount: ranking.length,
       itemBuilder: (context, index) {
         User user = ranking[index];
         Color color = getColor(index);
@@ -19,11 +20,13 @@ class RankingPage extends StatelessWidget {
         TextStyle style = new TextStyle(color: color, fontWeight: fontWeight, fontSize: size,);
 
         return new ListTile(
-          leading: new Center(
-              child: new Text(
-            "${index + 1}",
-            style: style,
-          )),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: new Text(
+              "${index + 1}",
+              style: style,
+            ),
+          ),
           title: new Text(
             user.name,
             style: style,
@@ -34,7 +37,6 @@ class RankingPage extends StatelessWidget {
           ),
         );
       },
-      itemCount: ranking.length,
     );
   }
 
