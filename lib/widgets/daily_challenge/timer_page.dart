@@ -1,5 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:sensors/sensors.dart';
 
 class TimerPage extends StatefulWidget {
   @override
@@ -9,10 +10,14 @@ class TimerPage extends StatefulWidget {
 }
 
 class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
+  final double shakeThreshold = 800.0;
   AnimationController _animationController;
   Animation _bubblesFlowAnimation;
   double _fillPercentage = 0.2;
   double baseHeight = 800.0;
+  double prevTotal = 0.0;
+  DateTime lastUpdate = new DateTime.now();
+  double _prevX = 0.0, _prevY = 0.0, _prevZ = 0.0;
 
   @override
   void initState() {
@@ -24,8 +29,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     _bubblesFlowAnimation = new Tween(
       begin: -baseHeight * 2,
       end: 0.0,
-    )
-        .animate(new CurvedAnimation(
+    ).animate(new CurvedAnimation(
       parent: _animationController,
       curve: Curves.linear,
     ));
@@ -37,6 +41,28 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       }
     });
     _animationController.forward();
+
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      DateTime current = new DateTime.now();
+      int diff = current.difference(lastUpdate).inMilliseconds;
+      if (diff > 100) {
+        lastUpdate = current;
+
+        double speed =
+            (_prevX + _prevY + _prevZ - event.x - event.y - event.z).abs() /
+                diff *
+                10000;
+
+        if (speed > shakeThreshold) {
+          print("shake detected w/ speed: $speed");
+        }
+        setState(() {
+          _prevX = event.x;
+          _prevY = event.y;
+          _prevZ = event.z;
+        });
+      }
+    });
   }
 
   @override
@@ -69,22 +95,17 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       child: new Text(
         "Gdy butelka się napełni odbierz nagrodę,\na pierwsze 100 osób otrzyma dodatkowe 300 punktów!",
         textAlign: TextAlign.center,
-        style: Theme
-            .of(context)
-            .textTheme
-            .caption,
+        style: Theme.of(context).textTheme.caption,
       ),
     );
   }
 
   Transform _buildProgressIndicatorContainer() {
     return new Transform(
-      transform: new Matrix4.identity()
-        ..scale(0.75),
+      transform: new Matrix4.identity()..scale(0.75),
       alignment: Alignment.center,
       child: new Container(
-        transform: new Matrix4.identity()
-          ..scale(1.0, 1 - _fillPercentage),
+        transform: new Matrix4.identity()..scale(1.0, 1 - _fillPercentage),
         color: const Color(0xFFFAFAFA),
       ),
     );
@@ -125,13 +146,13 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
         textColor: Colors.white,
         onPressed: _fillPercentage > 0.99
             ? () {
-          setState(() => _fillPercentage = 0.0);
-          print("A $_fillPercentage");
-        }
+                setState(() => _fillPercentage = 0.0);
+                print("A $_fillPercentage");
+              }
             : () {
-          setState(() => _fillPercentage += 0.1);
-          print("B $_fillPercentage");
-        },
+                setState(() => _fillPercentage += 0.1);
+                print("B $_fillPercentage");
+              },
         child: new Text("ODBIERZ NAGRODĘ!"),
         color: Colors.red,
       ),
