@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
@@ -10,14 +13,22 @@ class TimerPage extends StatefulWidget {
 }
 
 class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
-  final double shakeThreshold = 800.0;
   AnimationController _animationController;
   Animation _bubblesFlowAnimation;
-  double _fillPercentage = 0.2;
   double baseHeight = 800.0;
-  double prevTotal = 0.0;
+
+  Timer timer;
+  StreamSubscription<AccelerometerEvent> subscription;
+
+  //shaker:
   DateTime lastUpdate = new DateTime.now();
-  double _prevX = 0.0, _prevY = 0.0, _prevZ = 0.0;
+  DateTime lastShake = new DateTime.now().subtract(Duration(seconds: 3));
+  final double shakeThreshold = 800.0;
+  double x, y, z;
+  int counter = 0;
+  int maxCounter = 10;
+
+  double get fillPercentage => counter / maxCounter;
 
   @override
   void initState() {
@@ -42,33 +53,17 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     });
     _animationController.forward();
 
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      DateTime current = new DateTime.now();
-      int diff = current.difference(lastUpdate).inMilliseconds;
-      if (diff > 100) {
-        lastUpdate = current;
+    subscription = accelerometerEvents.listen(_onAccelerometerEvent);
 
-        double speed =
-            (_prevX + _prevY + _prevZ - event.x - event.y - event.z).abs() /
-                diff *
-                10000;
-
-        if (speed > shakeThreshold) {
-          print("shake detected w/ speed: $speed");
-        }
-        setState(() {
-          _prevX = event.x;
-          _prevY = event.y;
-          _prevZ = event.z;
-        });
-      }
+    timer =
+    new Timer.periodic(Duration(seconds: 1), (Timer t) => setState(() {}));
+    FirebaseDatabase.instance
+        .reference()
+        .child("counter")
+        .onValue
+        .listen((Event ev) {
+      counter = ev.snapshot.value % maxCounter;
     });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -81,19 +76,74 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
         _buildBottleFilling(),
         _buildProgressIndicatorContainer(),
         _buildBottleOutline(),
-        _buildReceiveButton(),
-        _buildBottomCaption(context),
+        _buildTopCaption(),
+        _buildBottomCaption(),
       ],
     );
   }
 
-  Positioned _buildBottomCaption(BuildContext context) {
+  @override
+  void dispose() {
+    _animationController.dispose();
+    timer.cancel();
+    subscription.cancel();
+    super.dispose();
+  }
+
+  _increaseCounter() {
+    FirebaseDatabase.instance
+        .reference()
+        .child('counter')
+        .runTransaction((MutableData data) async {
+      int counter = (data.value ?? -1) + 1;
+      return data..value = counter;
+    });
+  }
+
+  _onAccelerometerEvent(AccelerometerEvent event) {
+    DateTime current = new DateTime.now();
+    int diff = current
+        .difference(lastUpdate)
+        .inMilliseconds;
+    if (diff > 100) {
+      lastUpdate = current;
+
+      double speed = ((x ?? event.x) +
+          (y ?? event.y) +
+          (z ?? event.z) -
+          event.x -
+          event.y -
+          event.z)
+          .abs() /
+          diff *
+          10000;
+
+      if (speed > shakeThreshold) {
+        _onShakeEvent(speed);
+      }
+      setState(() {
+        x = event.x;
+        y = event.y;
+        z = event.z;
+      });
+    }
+  }
+
+  _onShakeEvent(double speed) {
+    if (_canShake()) {
+      print("Shake $speed");
+      _increaseCounter();
+      lastShake = new DateTime.now();
+    }
+  }
+
+  Positioned _buildBottomCaption() {
     return new Positioned(
       left: 0.0,
       right: 0.0,
       bottom: 8.0,
       child: new Text(
-        "Gdy butelka się napełni odbierz nagrodę,\na pierwsze 100 osób otrzyma dodatkowe 300 punktów!",
+        "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!",
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.caption,
       ),
@@ -105,7 +155,8 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       transform: new Matrix4.identity()..scale(0.75),
       alignment: Alignment.center,
       child: new Container(
-        transform: new Matrix4.identity()..scale(1.0, 1 - _fillPercentage),
+        transform: new Matrix4.identity()
+          ..scale(1.0, 1 - fillPercentage),
         color: const Color(0xFFFAFAFA),
       ),
     );
@@ -137,26 +188,23 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     );
   }
 
-  Positioned _buildReceiveButton() {
+  Positioned _buildTopCaption() {
+    String text = _canShake()
+        ? "Potrząśnij telefonem by dodać bąbelek!"
+        : "Następny bąbelek dostępny za ${5 - _shakeDiff()}s!";
     return new Positioned(
-      child: new RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24.0)),
-        ),
-        textColor: Colors.white,
-        onPressed: _fillPercentage > 0.99
-            ? () {
-                setState(() => _fillPercentage = 0.0);
-                print("A $_fillPercentage");
-              }
-            : () {
-                setState(() => _fillPercentage += 0.1);
-                print("B $_fillPercentage");
-              },
-        child: new Text("ODBIERZ NAGRODĘ!"),
-        color: Colors.red,
-      ),
+      child: new Text(text),
       top: 18.0,
     );
+  }
+
+  int _shakeDiff() {
+    return new DateTime.now()
+        .difference(lastShake)
+        .inSeconds;
+  }
+
+  bool _canShake() {
+    return _shakeDiff() >= 5;
   }
 }
