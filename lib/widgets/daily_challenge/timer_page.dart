@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
@@ -90,12 +91,26 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  _addPoints(int points) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    FirebaseDatabase.instance
+        .reference()
+        .child("users/${user.uid}/points")
+        .runTransaction((MutableData data) async {
+      int pts = (data.value ?? 0) + points;
+      return data..value = pts;
+    });
+  }
+
   _increaseCounter() {
     FirebaseDatabase.instance
         .reference()
         .child('counter')
         .runTransaction((MutableData data) async {
-      int counter = (data.value ?? -1) + 1;
+      int counter = (data.value ?? 0) + 1;
+      if (counter % maxCounter == 0) {
+        _addPoints(100);
+      }
       return data..value = counter;
     });
   }
