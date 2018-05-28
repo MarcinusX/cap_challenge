@@ -69,17 +69,35 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> children = [];
+    if (MediaQuery
+        .of(context)
+        .orientation == Orientation.portrait) {
+      children.addAll([
+        _buildBottleFilling(),
+        _buildProgressIndicatorContainer(),
+        _buildBottleOutline(),
+      ]);
+    } else {
+      children.add(new Center(
+        child: new Text(
+          "${counter * 100 ~/ maxCounter}%",
+          style: Theme
+              .of(context)
+              .textTheme
+              .display4,
+        ),
+      ));
+    }
+    children.addAll([
+      _buildTopCaption(),
+      _buildBottomCaption(),
+    ]);
     return new Stack(
       overflow: Overflow.visible,
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        _buildBottleFilling(),
-        _buildProgressIndicatorContainer(),
-        _buildBottleOutline(),
-        _buildTopCaption(),
-        _buildBottomCaption(),
-      ],
+      children: children,
     );
   }
 
