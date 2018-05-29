@@ -34,6 +34,7 @@ class MainScaffoldState extends State<MainScaffold>
   bool _isCapOpened = false;
   int points = 0;
   int _page = 0;
+  int tickets = 0;
 
   Widget _buildBody() {
     switch (_page) {
@@ -70,6 +71,8 @@ class MainScaffoldState extends State<MainScaffold>
     userRef.child('bottles').set(widget.bottleCollection
         .map((bottle, quantity) => new MapEntry(bottle.dbKey, quantity)));
 
+    userRef.child('tickets').set(tickets + 1);
+
     userRef.child('currentChallenges/${challenge.key}').set(true);
   }
 
@@ -83,6 +86,10 @@ class MainScaffoldState extends State<MainScaffold>
         .onChildChanged
         .listen(_onChallengeChanged);
     userRef.child('points').onValue.listen(_onPointsValue);
+    userRef
+        .child('tickets')
+        .onValue
+        .listen(_onTicketsValue);
     FirebaseDatabase.instance
         .reference()
         .child('users')
@@ -114,6 +121,12 @@ class MainScaffoldState extends State<MainScaffold>
   void _onPointsValue(Event event) {
     setState(() {
       points = event.snapshot.value;
+    });
+  }
+
+  void _onTicketsValue(Event event) {
+    setState(() {
+      tickets = event.snapshot.value;
     });
   }
 
