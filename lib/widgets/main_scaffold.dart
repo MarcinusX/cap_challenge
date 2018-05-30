@@ -41,7 +41,10 @@ class MainScaffoldState extends State<MainScaffold>
       case 0:
         return new TimerPage();
       case 1:
-        return new CollectionPage(widget.bottleCollection);
+        return new CollectionPage(
+          bottleCollection: widget.bottleCollection,
+          numberOfTickets: tickets,
+        );
       case 2:
         return new ChallengesPage(
             widget.bottleCollection, widget.challenges, completeChallenge);
@@ -103,7 +106,6 @@ class MainScaffoldState extends State<MainScaffold>
     (event.snapshot.value as Map<dynamic, dynamic>).forEach((key, val) {
       User user = User.fromMap(val);
       widget.usersRanking.add(user);
-
     });
     setState(() {
       widget.usersRanking.sort((u1, u2) => u2.points.compareTo(u1.points));
@@ -125,6 +127,9 @@ class MainScaffoldState extends State<MainScaffold>
   }
 
   void _onTicketsValue(Event event) {
+    if (event.snapshot.value == null) {
+      return;
+    }
     setState(() {
       tickets = event.snapshot.value;
     });

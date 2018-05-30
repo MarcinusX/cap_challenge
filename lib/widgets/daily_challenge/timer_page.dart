@@ -56,8 +56,10 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
     subscription = accelerometerEvents.listen(_onAccelerometerEvent);
 
-    timer =
-    new Timer.periodic(Duration(seconds: 1), (Timer t) => setState(() {}));
+    timer = new Timer.periodic(
+      Duration(seconds: 1),
+          (Timer t) => setState(() {}),
+    );
     FirebaseDatabase.instance
         .reference()
         .child("counter")
