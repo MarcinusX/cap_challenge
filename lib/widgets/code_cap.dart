@@ -129,8 +129,9 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
         context: context,
         builder: (context) {
           return new AlertDialog(
-            title: new Text("Ups..."),
-            content: new Text("coś poszło nie tak"),
+            title: new Text("Nieprawidłowy kod"),
+            content: new Text(
+                "Sprawdź czy poprawnie wpisałeś kod spod nakrętki."),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(),
