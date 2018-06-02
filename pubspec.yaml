@@ -12,6 +12,8 @@ dependencies:
   flutter_facebook_login: "^1.1.1"
   sliver_fab: "^0.1.0"
   sensors: "^0.3.2"
+  qr_flutter: "^1.1.1"
+
 
 
 dev_dependencies:
@@ -61,6 +63,7 @@ flutter:
     - images/bubbles_long.jpg
     - images/challenge_bottle.png
     - images/ticket.jpg
+    - images/ticket-vertical.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

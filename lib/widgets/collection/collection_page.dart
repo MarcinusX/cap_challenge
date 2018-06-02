@@ -1,5 +1,6 @@
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/widgets/collection/collection_grid_item.dart';
+import 'package:cap_challenge/widgets/collection/ticket_page.dart';
 import 'package:flutter/material.dart';
 
 class CollectionPage extends StatefulWidget {
@@ -88,12 +89,18 @@ class CollectionPageState extends State<CollectionPage>
       );
     }
     return new ListView.builder(
-      itemBuilder: (index, context) {
+      itemBuilder: (context, index) {
         return new Padding(
           padding: const EdgeInsets.all(8.0),
-          child: new Image.asset(
-            "images/ticket.jpg",
-            fit: BoxFit.fitWidth,
+          child: new GestureDetector(
+            onTap: () =>
+                Navigator.of(context).push(
+                    new MaterialPageRoute(
+                        builder: (context) => new TicketPage())),
+            child: new Image.asset(
+              "images/ticket.jpg",
+              fit: BoxFit.fitWidth,
+            ),
           ),
         );
       },
