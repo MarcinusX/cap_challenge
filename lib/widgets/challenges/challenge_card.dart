@@ -201,11 +201,11 @@ class ChallengeCard extends StatelessWidget {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        new FlatButton(
-          textColor: Colors.red,
-          onPressed: () {},
-          child: new Text("UDOSTĘPNIJ"),
-        ),
+//        new FlatButton(
+//          textColor: Colors.red,
+//          onPressed: () {},
+//          child: new Text("UDOSTĘPNIJ"),
+//        ),
         new FlatButton(
           textColor: Colors.red,
           onPressed: () => _goToDetails(context, challenge),
