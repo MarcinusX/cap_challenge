@@ -9,6 +9,7 @@ import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
 import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
+import 'package:cap_challenge/widgets/profile_dialog.dart';
 import 'package:cap_challenge/widgets/ranking/ranking_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -93,12 +94,8 @@ class MainScaffoldState extends State<MainScaffold>
         .child('tickets')
         .onValue
         .listen(_onTicketsValue);
-    FirebaseDatabase.instance
-        .reference()
-        .child('users')
-        .orderByChild('points')
-        .limitToLast(20)
-          ..onValue.listen(_onUsersInRanking);
+    FirebaseDatabase.instance.reference().child('users')
+      ..onValue.listen(_onUsersInRanking);
   }
 
   void _onUsersInRanking(Event event) {
@@ -188,8 +185,18 @@ class MainScaffoldState extends State<MainScaffold>
               ),
             ),
             onTap: () {
-              AuthService.instance.logout().then(
-                  (_) => Navigator.of(context).pushReplacementNamed("login"));
+              showDialog(
+                context: context,
+                builder: (context) =>
+                new ProfileDialog(
+                  points: points,
+                  tickets: tickets,
+                  rankingPlace: widget.usersRanking.indexWhere((user) =>
+                  user.email ==
+                      AuthService.instance.currentUser.email) +
+                      1,
+                ),
+              );
             },
           ),
         ],
