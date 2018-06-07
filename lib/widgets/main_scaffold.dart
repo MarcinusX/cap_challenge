@@ -9,6 +9,7 @@ import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
 import 'package:cap_challenge/widgets/daily_challenge/timer_page.dart';
+import 'package:cap_challenge/widgets/points_indicator.dart';
 import 'package:cap_challenge/widgets/profile_dialog.dart';
 import 'package:cap_challenge/widgets/ranking/ranking_page.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -51,8 +52,6 @@ class MainScaffoldState extends State<MainScaffold>
             widget.bottleCollection, widget.challenges, completeChallenge);
       case 3:
         return new RankingPage(ranking: widget.usersRanking);
-//      case 4:
-//        return new CommunityPage();
       default:
         return new TimerPage();
     }
@@ -78,6 +77,8 @@ class MainScaffoldState extends State<MainScaffold>
     userRef.child('tickets').set(tickets + 1);
 
     userRef.child('currentChallenges/${challenge.key}').set(true);
+
+    userRef.child('points').set(points + challenge.reward);
   }
 
   @override
@@ -165,16 +166,10 @@ class MainScaffoldState extends State<MainScaffold>
         title: new Text("Cap challenge"),
         actions: <Widget>[
           new Center(
-              child: Row(
-            children: <Widget>[
-              new Text(
-                "$points",
-                style:
-                    new TextStyle(fontSize: 22.0, fontWeight: FontWeight.w500),
-              ),
-              new Text("pkt"),
-            ],
-          )),
+            child: new PointsIndicator(
+              actualPoints: points,
+            ),
+          ),
           new GestureDetector(
             child: new Padding(
               padding: const EdgeInsets.all(6.0),

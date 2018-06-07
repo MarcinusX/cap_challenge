@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -29,7 +30,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   int counter = 0;
   int maxCounter = 10;
 
-  double get fillPercentage => counter / maxCounter;
+  double get fillPercentage => math.max(0.07, counter / maxCounter);
 
   @override
   void initState() {
