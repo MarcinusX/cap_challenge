@@ -16,6 +16,7 @@ class TimerPage extends StatefulWidget {
 
 class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   AnimationController _animationController;
+  AnimationController _capAnimationController;
   Animation _bubblesFlowAnimation;
   double baseHeight = 800.0;
 
@@ -68,6 +69,11 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
         .listen((Event ev) {
       counter = ev.snapshot.value % maxCounter;
     });
+
+    _capAnimationController = new AnimationController(
+      vsync: this,
+      duration: new Duration(milliseconds: 1000),
+    );
   }
 
   @override
@@ -95,12 +101,16 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     children.addAll([
       _buildTopCaption(),
       _buildBottomCaption(),
+      _buildAnimatedCap(),
     ]);
-    return new Stack(
-      overflow: Overflow.visible,
-      fit: StackFit.expand,
-      alignment: Alignment.bottomCenter,
-      children: children,
+    return new GestureDetector(
+      onTap: () => _capAnimationController.reset(),
+      child: new Stack(
+        overflow: Overflow.visible,
+        fit: StackFit.expand,
+        alignment: Alignment.bottomCenter,
+        children: children,
+      ),
     );
   }
 
@@ -121,6 +131,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       int pts = (data.value ?? 0) + points;
       return data..value = pts;
     });
+    _capAnimationController.forward();
   }
 
   _increaseCounter() {
@@ -242,5 +253,49 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
   bool _canShake() {
     return _shakeDiff() >= 5;
+  }
+
+  Widget _buildAnimatedCap() {
+    return new Align(
+      alignment: Alignment.topCenter,
+      child: new AnimatedBuilder(
+        animation: _capAnimationController,
+        builder: (context, child) {
+          double angleX = math.pi * 6 * _capAnimationController.value;
+          bool showFront = (angleX / math.pi) % 2 < 1;
+          return new Padding(
+            padding: const EdgeInsets.only(top: 80.0),
+            child: new Transform(
+              transform: new Matrix4.identity()
+                ..rotateX(angleX),
+              alignment: Alignment.center,
+              child: new Container(
+                child: new Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    new Image.asset(
+                      showFront ? "images/cap.png" : "images/cap_reverse.png",
+                      fit: BoxFit.fill,
+                    ),
+                    _capAnimationController.isCompleted
+                        ? new Text(
+                      "Gratulacje!\nOtrzymałeś 100 pkt!",
+                      textAlign: TextAlign.center,
+                    )
+                        : new Container(),
+                  ],
+                ),
+                height: 260.0 * _capAnimationController.value,
+                width: 260.0 * _capAnimationController.value,
+                decoration: new ShapeDecoration(
+                  color: Colors.red,
+                  shape: new CircleBorder(),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
