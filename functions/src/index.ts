@@ -20,9 +20,9 @@ const sizes = {
 };
 
 const pointSheet = {
-    '1': 50,
-    '2': 100,
-    '3': 150,
+    '1': 100,
+    '2': 150,
+    '3': 200,
     '4': 300,
     '5': 500,
 };
@@ -32,6 +32,11 @@ export const OnCreateFunction = functions.auth.user().onCreate((event) => {
         username: event.data.displayName,
         email: event.data.email,
         points: 0,
+        currentChallenges: {
+            challengeId1: false,
+            challengeId2: false,
+            challengeId3: false,
+        }
     });
 });
 

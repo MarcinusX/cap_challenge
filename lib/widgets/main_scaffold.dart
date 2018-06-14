@@ -226,11 +226,6 @@ class MainScaffoldState extends State<MainScaffold>
             icon: new Icon(Icons.swap_vert),
             title: new Text("Ranking"),
           ),
-//          new BottomNavigationBarItem(
-//            backgroundColor: Colors.red,
-//            icon: new Icon(Icons.people),
-//            title: new Text("Społeczność"),
-//          ),
         ],
         type: BottomNavigationBarType.fixed,
         onTap: _navigationTapped,
