@@ -33,6 +33,10 @@ class _PoinstIndicatorState extends State<PointsIndicator> {
             displayPoints += 1;
           }
         });
+      } else {
+        setState(() {
+          displayPoints = widget.actualPoints;
+        });
       }
     });
   }
