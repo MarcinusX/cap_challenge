@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "506626629602-n892s5iidd9ertp0lhjtm77ogkuf3rvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszalek.capchallenge",
+            "certificate_hash": "7305c2681fd5185da3dff42cd346b1290238e177"
+          }
+        },
+        {
+          "client_id": "506626629602-930q9u6bt8h4gnc29uvlfs83itpdqlg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszalek.capchallenge",
+            "certificate_hash": "a64ae41edc2af37d0400491cffdfc08e96ca7acb"
+          }
+        },
+        {
           "client_id": "506626629602-t53t06721gbgjh0di6qnoruvlshfsilr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -42,6 +58,13 @@
             {
               "client_id": "506626629602-t53t06721gbgjh0di6qnoruvlshfsilr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "506626629602-m9smnjb9201eu8l598bbs368jo7n5c82.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mszalek.capChallenge"
+              }
             }
           ]
         },
