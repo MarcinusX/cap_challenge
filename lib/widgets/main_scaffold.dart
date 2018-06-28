@@ -1,10 +1,8 @@
 import 'dart:async';
 
+import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
-import 'package:cap_challenge/models/bottle.dart';
-import 'package:cap_challenge/models/challenge.dart';
-import 'package:cap_challenge/models/user.dart';
 import 'package:cap_challenge/widgets/challenges/challenges_page.dart';
 import 'package:cap_challenge/widgets/code_cap.dart';
 import 'package:cap_challenge/widgets/collection/collection_page.dart';
@@ -14,11 +12,9 @@ import 'package:cap_challenge/widgets/profile_dialog.dart';
 import 'package:cap_challenge/widgets/ranking/ranking_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class MainScaffold extends StatefulWidget {
-  final Map<Bottle, int> bottleCollection = {};
-  final List<Challenge> challenges = [];
-  final List<User> usersRanking = [];
 
   @override
   State<StatefulWidget> createState() {
@@ -34,24 +30,18 @@ class MainScaffoldState extends State<MainScaffold>
       .child(AuthService.instance.currentUser.uid);
   bool _showFab = true;
   bool _isCapOpened = false;
-  int points = 0;
   int _page = 0;
-  int tickets = 0;
 
   Widget _buildBody() {
     switch (_page) {
       case 0:
         return new TimerPage();
       case 1:
-        return new CollectionPage(
-          bottleCollection: widget.bottleCollection,
-          numberOfTickets: tickets,
-        );
+        return new CollectionPage();
       case 2:
-        return new ChallengesPage(
-            widget.bottleCollection, widget.challenges, completeChallenge);
+        return new ChallengesPage();
       case 3:
-        return new RankingPage(ranking: widget.usersRanking);
+        return new RankingPage();
       default:
         return new TimerPage();
     }
@@ -66,174 +56,84 @@ class MainScaffoldState extends State<MainScaffold>
     }
   }
 
-  completeChallenge(Challenge challenge) {
-    challenge.requirements.forEach((bottle, quantity) {
-      widget.bottleCollection[bottle] -= quantity;
-    });
-
-    userRef.child('bottles').set(widget.bottleCollection
-        .map((bottle, quantity) => new MapEntry(bottle.dbKey, quantity)));
-
-    userRef.child('tickets').set(tickets + 1);
-
-    userRef.child('currentChallenges/${challenge.key}').set(true);
-
-    userRef.child('points').set(points + challenge.reward);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    userRef.child('bottles').onValue.listen(_onBottlesValue);
-    userRef.child('currentChallenges').onChildAdded.listen(_onChallengeAdded);
-    userRef
-        .child('currentChallenges')
-        .onChildChanged
-        .listen(_onChallengeChanged);
-    userRef.child('points').onValue.listen(_onPointsValue);
-    userRef
-        .child('tickets')
-        .onValue
-        .listen(_onTicketsValue);
-    FirebaseDatabase.instance.reference().child('users')
-      ..onValue.listen(_onUsersInRanking);
-  }
-
-  void _onUsersInRanking(Event event) {
-    widget.usersRanking.clear();
-    (event.snapshot.value as Map<dynamic, dynamic>).forEach((key, val) {
-      User user = User.fromMap(val);
-      widget.usersRanking.add(user);
-    });
-    setState(() {
-      widget.usersRanking.sort((u1, u2) => u2.points.compareTo(u1.points));
-    });
-  }
-
-  void _onChallengeChanged(Event event) {
-    setState(() {
-      widget.challenges
-          .singleWhere((challenge) => challenge.key == event.snapshot.key)
-          .isCompleted = event.snapshot.value;
-    });
-  }
-
-  void _onPointsValue(Event event) {
-    setState(() {
-      points = event.snapshot.value;
-    });
-  }
-
-  void _onTicketsValue(Event event) {
-    if (event.snapshot.value == null) {
-      return;
-    }
-    setState(() {
-      tickets = event.snapshot.value;
-    });
-  }
-
-  void _onChallengeAdded(Event event) async {
-    DataSnapshot dataSnapshot = await FirebaseDatabase.instance
-        .reference()
-        .child('challenges/${event.snapshot.key}')
-        .once();
-    Challenge challenge =
-        new Challenge.fromMap(dataSnapshot.value, dataSnapshot.key);
-    challenge.isCompleted = event.snapshot.value;
-    setState(() => widget.challenges.add(challenge));
-  }
-
-  void _onBottlesValue(event) {
-    setState(() {
-      Map<dynamic, dynamic> bottles = event.snapshot.value;
-      bottles?.forEach((key, val) {
-        Bottle bottle = new Bottle(key);
-        if (val == 0) {
-          widget.bottleCollection.remove(bottle);
-        } else {
-          widget.bottleCollection[bottle] = val;
-        }
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        elevation: 0.0,
-        title: new Text("Cap challenge"),
-        actions: <Widget>[
-          new Center(
-            child: new PointsIndicator(
-              actualPoints: points,
-            ),
-          ),
-          new GestureDetector(
-            child: new Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: new CircleAvatar(
-                radius: 22.0,
-                backgroundImage:
-                    new NetworkImage(AuthService.instance.currentUser.photoUrl),
-              ),
-            ),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                new ProfileDialog(
-                  points: points,
-                  tickets: tickets,
-                  rankingPlace: widget.usersRanking.indexWhere((user) =>
-                  user.email ==
-                      AuthService.instance.currentUser.email) +
-                      1,
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: (store) {
+        return new _ViewModel(
+            points: store.state.points
+        );
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        return new Scaffold(
+          appBar: new AppBar(
+            elevation: 0.0,
+            title: new Text("Cap challenge"),
+            actions: <Widget>[
+              new Center(
+                child: new PointsIndicator(
+                  actualPoints: vm.points,
                 ),
-              );
-            },
+              ),
+              new GestureDetector(
+                child: new Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: new CircleAvatar(
+                    radius: 22.0,
+                    backgroundImage: new NetworkImage(
+                        AuthService.instance.currentUser.photoUrl),
+                  ),
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => new ProfileDialog(),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      body: new Material(
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.vertical(top: Radius.circular(24.0)),
-        ),
-        child: _buildBody(),
-      ),
-      backgroundColor: Colors.red,
-      bottomNavigationBar: new BottomNavigationBar(
-        items: [
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: new Icon(Icons.whatshot),
-            title: new Text("Zadanie dnia"),
+          body: new Material(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+              borderRadius:
+              new BorderRadius.vertical(top: Radius.circular(24.0)),
+            ),
+            child: _buildBody(),
           ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: new Icon(Icons.view_module),
-            title: new Text("Kolekcja"),
+          backgroundColor: Colors.red,
+          bottomNavigationBar: new BottomNavigationBar(
+            items: [
+              new BottomNavigationBarItem(
+                backgroundColor: Colors.red,
+                icon: new Icon(Icons.whatshot),
+                title: new Text("Zadanie dnia"),
+              ),
+              new BottomNavigationBarItem(
+                backgroundColor: Colors.red,
+                icon: new Icon(Icons.view_module),
+                title: new Text("Kolekcja"),
+              ),
+              new BottomNavigationBarItem(
+                backgroundColor: Colors.red,
+                icon: new Icon(Icons.star),
+                title: new Text("Wyzwania"),
+              ),
+              new BottomNavigationBarItem(
+                backgroundColor: Colors.red,
+                icon: new Icon(Icons.swap_vert),
+                title: new Text("Ranking"),
+              ),
+            ],
+            type: BottomNavigationBarType.fixed,
+            onTap: _navigationTapped,
+            currentIndex: _page,
           ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: new Icon(Icons.star),
-            title: new Text("Wyzwania"),
+          floatingActionButton: new Builder(
+            builder: (BuildContext context) => _buildFab(context),
           ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: new Icon(Icons.swap_vert),
-            title: new Text("Ranking"),
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        onTap: _navigationTapped,
-        currentIndex: _page,
-      ),
-      floatingActionButton: new Builder(
-        builder: (BuildContext context) => _buildFab(context),
-      ),
+        );
+      },
     );
   }
 
@@ -309,4 +209,10 @@ class MainScaffoldState extends State<MainScaffold>
           ),
     );
   }
+}
+
+class _ViewModel {
+  final int points;
+
+  _ViewModel({@required this.points});
 }

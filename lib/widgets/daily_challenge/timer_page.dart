@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:cap_challenge/logic/app_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sensors/sensors.dart';
 
 class TimerPage extends StatefulWidget {
@@ -28,10 +30,9 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   DateTime lastShake = new DateTime.now().subtract(Duration(seconds: 3));
   final double shakeThreshold = 800.0;
   double x, y, z;
-  int counter = 0;
   int maxCounter = 10;
 
-  double get fillPercentage => math.max(0.07, counter / maxCounter);
+  double fillPercentage(int counter) => math.max(0.07, counter / maxCounter);
 
   @override
   void initState() {
@@ -62,13 +63,6 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       Duration(seconds: 1),
           (Timer t) => setState(() {}),
     );
-    FirebaseDatabase.instance
-        .reference()
-        .child("counter")
-        .onValue
-        .listen((Event ev) {
-      counter = ev.snapshot.value % maxCounter;
-    });
 
     _capAnimationController = new AnimationController(
       vsync: this,
@@ -78,19 +72,40 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: (store) {
+        return new _ViewModel(
+          counter: store.state.counter,
+        );
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        return new GestureDetector(
+          onTap: () => _capAnimationController.reset(),
+          child: new Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            alignment: Alignment.bottomCenter,
+            children: _buildStackChildren(vm),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildStackChildren(_ViewModel vm) {
     List<Widget> children = [];
     if (MediaQuery
         .of(context)
         .orientation == Orientation.portrait) {
       children.addAll([
         _buildBottleFilling(),
-        _buildProgressIndicatorContainer(),
+        _buildProgressIndicatorContainer(vm.counter),
         _buildBottleOutline(),
       ]);
     } else {
       children.add(new Center(
         child: new Text(
-          "${counter * 100 ~/ maxCounter}%",
+          "${vm.counter * 100 ~/ maxCounter}%",
           style: Theme
               .of(context)
               .textTheme
@@ -100,18 +115,10 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     }
     children.addAll([
       _buildTopCaption(),
-      _buildBottomCaption(),
+      _buildBottomCaption(vm.counter),
       _buildAnimatedCap(),
     ]);
-    return new GestureDetector(
-      onTap: () => _capAnimationController.reset(),
-      child: new Stack(
-        overflow: Overflow.visible,
-        fit: StackFit.expand,
-        alignment: Alignment.bottomCenter,
-        children: children,
-      ),
-    );
+    return children;
   }
 
   @override
@@ -184,7 +191,7 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     }
   }
 
-  Positioned _buildBottomCaption() {
+  Positioned _buildBottomCaption(int counter) {
     return new Positioned(
       left: 0.0,
       right: 0.0,
@@ -197,13 +204,13 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     );
   }
 
-  Transform _buildProgressIndicatorContainer() {
+  Transform _buildProgressIndicatorContainer(int counter) {
     return new Transform(
       transform: new Matrix4.identity()..scale(0.75),
       alignment: Alignment.center,
       child: new Container(
         transform: new Matrix4.identity()
-          ..scale(1.0, 1 - fillPercentage),
+          ..scale(1.0, 1 - fillPercentage(counter)),
         color: const Color(0xFFFAFAFA),
       ),
     );
@@ -298,4 +305,10 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+class _ViewModel {
+  final int counter;
+
+  _ViewModel({this.counter});
 }

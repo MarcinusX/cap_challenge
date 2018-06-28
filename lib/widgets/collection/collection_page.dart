@@ -1,13 +1,14 @@
+import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/widgets/collection/collection_grid_item.dart';
 import 'package:cap_challenge/widgets/collection/ticket_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class CollectionPage extends StatefulWidget {
-  final Map<Bottle, int> bottleCollection;
-  final int numberOfTickets;
 
-  CollectionPage({this.bottleCollection, this.numberOfTickets});
+
+  CollectionPage();
 
   @override
   State<StatefulWidget> createState() {
@@ -27,40 +28,48 @@ class CollectionPageState extends State<CollectionPage>
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        new TabBar(
-          tabs: [
-            new Tab(
-              child: new Text(
-                "KAPSLE",
-                style: new TextStyle(color: Colors.red),
-              ),
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: (store) {
+        return new _ViewModel(bottleCollection: store.state.collection,
+            numberOfTickets: store.state.tickets);
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        return new Column(
+          children: <Widget>[
+            new TabBar(
+              tabs: [
+                new Tab(
+                  child: new Text(
+                    "KAPSLE",
+                    style: new TextStyle(color: Colors.red),
+                  ),
+                ),
+                new Tab(
+                  child: new Text(
+                    "BILETY",
+                    style: new TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+              controller: _tabController,
             ),
-            new Tab(
-              child: new Text(
-                "BILETY",
-                style: new TextStyle(color: Colors.red),
+            new Expanded(
+              child: new TabBarView(
+                children: [
+                  _buildCapsView(vm),
+                  _buildTicketsView(vm),
+                ],
+                controller: _tabController,
               ),
             ),
           ],
-          controller: _tabController,
-        ),
-        new Expanded(
-          child: new TabBarView(
-            children: [
-              _buildCapsView(),
-              _buildTicketsView(),
-            ],
-            controller: _tabController,
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
-  Widget _buildCapsView() {
-    if (widget.bottleCollection.values
+  Widget _buildCapsView(_ViewModel vm) {
+    if (vm.bottleCollection.values
         .where((quantity) => quantity > 0)
         .isEmpty) {
       return new Center(
@@ -73,14 +82,14 @@ class CollectionPageState extends State<CollectionPage>
     return new GridView.count(
       padding: new EdgeInsets.all(8.0),
       crossAxisCount: 3,
-      children: widget.bottleCollection.keys.map((bottle) {
-        return new CollectionGridItem(bottle, widget.bottleCollection[bottle]);
+      children: vm.bottleCollection.keys.map((bottle) {
+        return new CollectionGridItem(bottle, vm.bottleCollection[bottle]);
       }).toList(),
     );
   }
 
-  Widget _buildTicketsView() {
-    if (widget.numberOfTickets == 0) {
+  Widget _buildTicketsView(_ViewModel vm) {
+    if (vm.numberOfTickets == 0) {
       return new Center(
         child: new Text(
           "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!",
@@ -104,7 +113,14 @@ class CollectionPageState extends State<CollectionPage>
           ),
         );
       },
-      itemCount: widget.numberOfTickets,
+      itemCount: vm.numberOfTickets,
     );
   }
+}
+
+class _ViewModel {
+  final Map<Bottle, int> bottleCollection;
+  final int numberOfTickets;
+
+  _ViewModel({@required this.bottleCollection, @required this.numberOfTickets});
 }
