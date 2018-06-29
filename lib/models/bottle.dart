@@ -209,7 +209,7 @@ String bottleCapacityToShortString(Capacity capacity) {
 String bottleCapacityToLongString(Capacity capacity) {
   switch (capacity) {
     case Capacity.CAN_300:
-      return "puszka 300 ml";
+      return "puszka 330 ml";
     case Capacity.PLASTIC_1L:
       return "butelka 1 l";
     case Capacity.PLASTIC_2L:

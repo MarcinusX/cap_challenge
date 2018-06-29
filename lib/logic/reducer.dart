@@ -6,7 +6,12 @@ import 'actions.dart';
 AppState reduce(AppState state, action) {
   print("reducer sees ${action.runtimeType}");
   if (action is UserProvidedAction) {
-    return state.copyWith(user: action.user);
+    AppState newState = state.copyWith(user: action.user);
+    if (action.user == null) {
+      newState = newState.copyWith(
+        tickets: 0, collection: {}, points: 0, challenges: [],);
+    }
+    return newState;
   } else if (action is PointsUpdatedAction) {
     return state.copyWith(points: action.points);
   } else if (action is TicketsUpdatedAction) {

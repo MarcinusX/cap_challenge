@@ -102,7 +102,13 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
             borderRadius: new BorderRadius.circular(24.0),
           ),
           onPressed: () =>
-              _sendBottleCode(_textController.text).then(_handleSubmitResponse),
+              _sendBottleCode(_textController.text)
+                  .then(_handleSubmitResponse)
+                  .catchError((err) {
+                print(err);
+                _animationController.stop();
+                _showBadCodeDialog();
+              }),
           color: Colors.red,
           child: new Text(
             "WYŚLIJ KOD",
@@ -125,23 +131,27 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
     if (response.statusCode == 200) {
       Navigator.of(context).pop(new AddedCodeResult(isOk: true));
     } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return new AlertDialog(
-            title: new Text("Nieprawidłowy kod"),
-            content: new Text(
-                "Sprawdź czy poprawnie wpisałeś kod spod nakrętki."),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: new Text("Zamknij"),
-              )
-            ],
-          );
-        },
-      );
+      _showBadCodeDialog();
     }
+  }
+
+  void _showBadCodeDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return new AlertDialog(
+          title: new Text("Nieprawidłowy kod"),
+          content:
+          new Text("Sprawdź czy poprawnie wpisałeś kod spod nakrętki."),
+          actions: <Widget>[
+            new FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: new Text("Zamknij"),
+            )
+          ],
+        );
+      },
+    );
   }
 
   Center _buildInput() {
