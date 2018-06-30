@@ -1,15 +1,16 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/actions.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/logic/auth_service.dart';
+import 'package:cap_challenge/logic/middleware.dart';
+import 'package:cap_challenge/logic/reducer.dart';
 import 'package:cap_challenge/widgets/login/login_page.dart';
 import 'package:cap_challenge/widgets/main_scaffold.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-import 'package:cap_challenge/logic/middleware.dart';
-import 'package:cap_challenge/logic/reducer.dart';
+import 'package:redux/redux.dart';
 
 void main() async {
   Widget _defaultHome = new LoginPage();
@@ -45,6 +46,15 @@ class MyApp extends StatelessWidget {
         theme: new ThemeData(
           primarySwatch: Colors.red,
         ),
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('pl', ''),
+        ],
+        localizationsDelegates: [
+          new GeneratedLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         home: defaultHome,
         routes: {

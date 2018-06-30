@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/logic/auth_service.dart';
 import 'package:cap_challenge/models/add_code_result.dart';
@@ -107,22 +108,30 @@ class MainScaffoldState extends State<MainScaffold>
               new BottomNavigationBarItem(
                 backgroundColor: Colors.red,
                 icon: new Icon(Icons.whatshot),
-                title: new Text("Zadanie dnia"),
+                title: new Text(S
+                    .of(context)
+                    .dailyChallenge),
               ),
               new BottomNavigationBarItem(
                 backgroundColor: Colors.red,
                 icon: new Icon(Icons.view_module),
-                title: new Text("Kolekcja"),
+                title: new Text(S
+                    .of(context)
+                    .collection),
               ),
               new BottomNavigationBarItem(
                 backgroundColor: Colors.red,
                 icon: new Icon(Icons.star),
-                title: new Text("Wyzwania"),
+                title: new Text(S
+                    .of(context)
+                    .challenges),
               ),
               new BottomNavigationBarItem(
                 backgroundColor: Colors.red,
                 icon: new Icon(Icons.swap_vert),
-                title: new Text("Ranking"),
+                title: new Text(S
+                    .of(context)
+                    .ranking),
               ),
             ],
             type: BottomNavigationBarType.fixed,
