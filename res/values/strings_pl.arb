@@ -1,7 +1,13 @@
 {
-  "sendCode": "Wyślij kod",
   "dailyChallenge": "Wyzwanie dnia",
   "collection": "Kolekcja",
   "challenges": "Wyzwania",
-  "ranking": "Ranking"
+  "ranking": "Ranking",
+  "sendCode": "Wyślij kod",
+  "invalidCode": "Nieprawidłowy kod",
+  "invalidCodeMsg": "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.",
+  "close": "Zamknij",
+  "codeUnderCap": "Kod spod nakrętki",
+  "addCodeTooltip": "Dodaj kod spod nakrętki",
+  "codeAddedMsg": "Butelka została dodana do Twojej kolekcji"
 }

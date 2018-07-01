@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/http_service.dart' show sendBottleCode;
 import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,10 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
               }),
           color: Colors.red,
           child: new Text(
-            "WYŚLIJ KOD",
+            S
+                .of(context)
+                .sendCode
+                .toUpperCase(),
             style: new TextStyle(color: Colors.white),
           ),
         ),
@@ -140,13 +144,19 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
       context: context,
       builder: (context) {
         return new AlertDialog(
-          title: new Text("Nieprawidłowy kod"),
+          title: new Text(S
+              .of(context)
+              .invalidCode),
           content:
-          new Text("Sprawdź czy poprawnie wpisałeś kod spod nakrętki."),
+          new Text(S
+              .of(context)
+              .invalidCodeMsg),
           actions: <Widget>[
             new FlatButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: new Text("Zamknij"),
+              child: new Text(S
+                  .of(context)
+                  .close),
             )
           ],
         );
@@ -161,7 +171,9 @@ class CodeCapState extends State<CodeCap> with TickerProviderStateMixin {
         child: new TextField(
           autocorrect: false,
           maxLength: 10,
-          decoration: new InputDecoration(labelText: "Kod spod nakrętki"),
+          decoration: new InputDecoration(labelText: S
+              .of(context)
+              .codeUnderCap),
           controller: _textController,
           onChanged: (text) =>
               setState(() => _shouldShowSubmitButton = text.length == 10),

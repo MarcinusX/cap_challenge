@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class MainScaffold extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return new MainScaffoldState();
@@ -61,9 +60,7 @@ class MainScaffoldState extends State<MainScaffold>
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
       converter: (store) {
-        return new _ViewModel(
-            points: store.state.points
-        );
+        return new _ViewModel(points: store.state.points);
       },
       builder: (BuildContext context, _ViewModel vm) {
         return new Scaffold(
@@ -160,7 +157,9 @@ class MainScaffoldState extends State<MainScaffold>
   Widget _createActualFab(BuildContext context) {
     return new FloatingActionButton(
       child: new Icon(Icons.add),
-      tooltip: "Dodaj kod spod nakrętki",
+      tooltip: S
+          .of(context)
+          .addCodeTooltip,
       onPressed: () {
         _pushCapView(context).then((dynamic result) {
           _onCapClosed();
@@ -168,9 +167,10 @@ class MainScaffoldState extends State<MainScaffold>
             _handleQrCode(result, context);
           } else if (result is AddedCodeResult) {
             if (result.isOk) {
-              Scaffold.of(context).showSnackBar(new SnackBar(
-                  content:
-                      new Text("Butelka została dodana do Twojej kolekcji")));
+              Scaffold.of(context).showSnackBar(
+                  new SnackBar(content: new Text(S
+                      .of(context)
+                      .codeAddedMsg)));
             }
           }
         });

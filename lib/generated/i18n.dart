@@ -1,8 +1,8 @@
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: camel_case_types
 // ignore_for_file: prefer_single_quotes
@@ -21,14 +21,22 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get addCodeTooltip => "Add code from under the cap";
   String get challenges => "Challenges";
 
-  String get collection => "Collection";
+  String get close => "Close";
 
+  String get codeAddedMsg => "Bottle added to your collection";
+
+  String get codeUnderCap => "Code under the cap";
+  String get collection => "Collection";
   String get dailyChallenge => "Bubbles";
 
-  String get ranking => "Ranking";
+  String get invalidCode => "Invalid code";
 
+  String get invalidCodeMsg =>
+      "Check if you typed code from under the cap correctly.";
+  String get ranking => "Ranking";
   String get sendCode => "Send code";
 }
 
@@ -43,20 +51,35 @@ class pl extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get challenges => "Wyzwania";
+  String get addCodeTooltip => "Dodaj kod spod nakrętki";
 
+  @override
+  String get invalidCodeMsg =>
+      "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
+
+  @override
+  String get codeUnderCap => "Kod spod nakrętki";
+
+  @override
+  String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
+  @override
+  String get challenges => "Wyzwania";
   @override
   String get sendCode => "Wyślij kod";
-
   @override
   String get dailyChallenge => "Wyzwanie dnia";
-
   @override
   String get ranking => "Ranking";
-
   @override
   String get collection => "Kolekcja";
+
+  @override
+  String get invalidCode => "Nieprawidłowy kod";
+
+  @override
+  String get close => "Zamknij";
 }
+
 
 class GeneratedLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
@@ -64,8 +87,10 @@ class GeneratedLocalizationsDelegate
 
   List<Locale> get supportedLocales {
     return const <Locale>[
+
       const Locale("en", ""),
       const Locale("pl", ""),
+
     ];
   }
 

@@ -1,7 +1,13 @@
 {
-  "sendCode": "Send code",
   "dailyChallenge": "Bubbles",
   "collection": "Collection",
   "challenges": "Challenges",
-  "ranking": "Ranking"
+  "ranking": "Ranking",
+  "sendCode": "Send code",
+  "invalidCode": "Invalid code",
+  "invalidCodeMsg": "Check if you typed code from under the cap correctly.",
+  "close": "Close",
+  "codeUnderCap": "Code under the cap",
+  "addCodeTooltip": "Add code from under the cap",
+  "codeAddedMsg": "Bottle added to your collection"
 }
