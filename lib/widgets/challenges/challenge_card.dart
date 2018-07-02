@@ -1,3 +1,4 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
 import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
@@ -54,7 +55,9 @@ class ChallengeCard extends StatelessWidget {
 
   Widget _buildNeededBottles(BuildContext context) {
     Text header = new Text(
-      "Wymagane produkty",
+      S
+          .of(context)
+          .requiredProducts,
       style: new TextStyle(fontWeight: FontWeight.bold),
     );
 
@@ -131,7 +134,9 @@ class ChallengeCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Text(
-                "Wykonano!",
+                S
+                    .of(context)
+                    .completed,
                 style: new TextStyle(fontSize: 28.0, color: Colors.white),
               ),
               new Padding(
@@ -201,15 +206,13 @@ class ChallengeCard extends StatelessWidget {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-//        new FlatButton(
-//          textColor: Colors.red,
-//          onPressed: () {},
-//          child: new Text("UDOSTĘPNIJ"),
-//        ),
         new FlatButton(
           textColor: Colors.red,
           onPressed: () => _goToDetails(context, challenge),
-          child: new Text("POKAŻ WIĘCEJ"),
+          child: new Text(S
+              .of(context)
+              .showMore
+              .toUpperCase()),
         ),
       ],
     );
@@ -219,8 +222,8 @@ class ChallengeCard extends StatelessWidget {
     Navigator
         .of(context)
         .push(new MaterialPageRoute<bool>(
-            builder: (context) =>
-                new ChallengeDetailsPage(challenge, bottleCollection)))
+        builder: (context) =>
+        new ChallengeDetailsPage(challenge, bottleCollection)))
         .then((challengeCompleted) {
       if (challengeCompleted ?? false) {
         this.completeChallenge(challenge);

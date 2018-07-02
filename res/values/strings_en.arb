@@ -9,5 +9,8 @@
   "close": "Close",
   "codeUnderCap": "Code under the cap",
   "addCodeTooltip": "Add code from under the cap",
-  "codeAddedMsg": "Bottle added to your collection"
+  "codeAddedMsg": "Bottle added to your collection",
+  "requiredProducts": "Required products",
+  "completed": "Completed!",
+  "showMore": "Show more"
 }

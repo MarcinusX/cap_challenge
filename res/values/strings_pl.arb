@@ -9,5 +9,8 @@
   "close": "Zamknij",
   "codeUnderCap": "Kod spod nakrętki",
   "addCodeTooltip": "Dodaj kod spod nakrętki",
-  "codeAddedMsg": "Butelka została dodana do Twojej kolekcji"
+  "codeAddedMsg": "Butelka została dodana do Twojej kolekcji",
+  "requiredProducts": "Wymagane produkty",
+  "completed": "Wykonano!",
+  "showMore": "Pokaż więcej"
 }

@@ -6,7 +6,6 @@ import 'package:cap_challenge/logic/http_service.dart' show sendBottleCode;
 import 'package:cap_challenge/models/add_code_result.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-//import 'package:qrcode_reader/QRCodeReader.dart';
 
 class CodeCap extends StatefulWidget {
   @override

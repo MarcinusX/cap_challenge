@@ -23,21 +23,23 @@ class S implements WidgetsLocalizations {
 
   String get addCodeTooltip => "Add code from under the cap";
   String get challenges => "Challenges";
-
   String get close => "Close";
-
   String get codeAddedMsg => "Bottle added to your collection";
-
   String get codeUnderCap => "Code under the cap";
   String get collection => "Collection";
-  String get dailyChallenge => "Bubbles";
 
+  String get completed => "Completed!";
+  String get dailyChallenge => "Bubbles";
   String get invalidCode => "Invalid code";
 
   String get invalidCodeMsg =>
       "Check if you typed code from under the cap correctly.";
   String get ranking => "Ranking";
+
+  String get requiredProducts => "Required products";
   String get sendCode => "Send code";
+
+  String get showMore => "Show more";
 }
 
 class en extends S {
@@ -51,15 +53,7 @@ class pl extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get addCodeTooltip => "Dodaj kod spod nakrętki";
-
-  @override
-  String get invalidCodeMsg =>
-      "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
-
-  @override
   String get codeUnderCap => "Kod spod nakrętki";
-
   @override
   String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
   @override
@@ -69,15 +63,29 @@ class pl extends S {
   @override
   String get dailyChallenge => "Wyzwanie dnia";
   @override
-  String get ranking => "Ranking";
-  @override
   String get collection => "Kolekcja";
-
+  @override
+  String get completed => "Wykonano!";
   @override
   String get invalidCode => "Nieprawidłowy kod";
 
   @override
+  String get addCodeTooltip => "Dodaj kod spod nakrętki";
+
+  @override
+  String get invalidCodeMsg =>
+      "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
+
+  @override
+  String get showMore => "Pokaż więcej";
+
+  @override
+  String get ranking => "Ranking";
+  @override
   String get close => "Zamknij";
+
+  @override
+  String get requiredProducts => "Wymagane produkty";
 }
 
 
