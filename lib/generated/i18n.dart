@@ -22,12 +22,18 @@ class S implements WidgetsLocalizations {
   TextDirection get textDirection => TextDirection.ltr;
 
   String get addCodeTooltip => "Add code from under the cap";
+
+  String get addFirstChallenge =>
+      "Complete you first challenge,\nto receive ticket for free Coca-Cola can!";
+
+  String get addFirstCode => "Press \"+\" button,\nto add code from the cap!";
+
+  String get caps => "Caps";
   String get challenges => "Challenges";
   String get close => "Close";
   String get codeAddedMsg => "Bottle added to your collection";
   String get codeUnderCap => "Code under the cap";
   String get collection => "Collection";
-
   String get completed => "Completed!";
   String get dailyChallenge => "Bubbles";
   String get invalidCode => "Invalid code";
@@ -35,11 +41,18 @@ class S implements WidgetsLocalizations {
   String get invalidCodeMsg =>
       "Check if you typed code from under the cap correctly.";
   String get ranking => "Ranking";
-
   String get requiredProducts => "Required products";
   String get sendCode => "Send code";
-
   String get showMore => "Show more";
+
+  String get showTicketMsg =>
+      "Show this ticket to salesman\nin order to receive Coca-Cola can!";
+
+  String get ticketPlaceholder => "What are we looking here? :)";
+
+  String get tickets => "Tickets";
+
+  String get yourTicket => "Your ticket";
 }
 
 class en extends S {
@@ -53,7 +66,12 @@ class pl extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get yourTicket => "Twój bilet";
+  @override
   String get codeUnderCap => "Kod spod nakrętki";
+
+  @override
+  String get tickets => "Bilety";
   @override
   String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
   @override
@@ -70,20 +88,33 @@ class pl extends S {
   String get invalidCode => "Nieprawidłowy kod";
 
   @override
+  String get caps => "Kapsle";
+  @override
+  String get addFirstChallenge =>
+      "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!";
+
+  @override
   String get addCodeTooltip => "Dodaj kod spod nakrętki";
+  @override
+  String get showTicketMsg =>
+      "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
 
   @override
   String get invalidCodeMsg =>
       "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
+  @override
+  String get addFirstCode =>
+      "Naciśnij przycisk \"+\",\naby dodać kod spod nakrętki!";
 
   @override
   String get showMore => "Pokaż więcej";
-
   @override
   String get ranking => "Ranking";
+
+  @override
+  String get ticketPlaceholder => "A czego tutaj szukamy? :)";
   @override
   String get close => "Zamknij";
-
   @override
   String get requiredProducts => "Wymagane produkty";
 }

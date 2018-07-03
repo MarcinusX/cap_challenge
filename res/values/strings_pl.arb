@@ -12,5 +12,12 @@
   "codeAddedMsg": "Butelka została dodana do Twojej kolekcji",
   "requiredProducts": "Wymagane produkty",
   "completed": "Wykonano!",
-  "showMore": "Pokaż więcej"
+  "showMore": "Pokaż więcej",
+  "caps": "Kapsle",
+  "tickets": "Bilety",
+  "addFirstCode": "Naciśnij przycisk \"+\",\naby dodać kod spod nakrętki!",
+  "addFirstChallenge": "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!",
+  "ticketPlaceholder": "A czego tutaj szukamy? :)",
+  "yourTicket": "Twój bilet",
+  "showTicketMsg": "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!"
 }

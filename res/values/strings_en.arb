@@ -12,5 +12,12 @@
   "codeAddedMsg": "Bottle added to your collection",
   "requiredProducts": "Required products",
   "completed": "Completed!",
-  "showMore": "Show more"
+  "showMore": "Show more",
+  "caps": "Caps",
+  "tickets": "Tickets",
+  "addFirstCode": "Press \"+\" button,\nto add code from the cap!",
+  "addFirstChallenge": "Complete you first challenge,\nto receive ticket for free Coca-Cola can!",
+  "ticketPlaceholder": "What are we looking here? :)",
+  "yourTicket": "Your ticket",
+  "showTicketMsg": "Show this ticket to salesman\nin order to receive Coca-Cola can!"
 }

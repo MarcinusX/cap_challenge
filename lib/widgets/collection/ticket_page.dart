@@ -1,3 +1,4 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -18,7 +19,9 @@ class TicketPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new QrImage(
-                  data: "A czego tutaj szukamy? :)",
+                  data: S
+                      .of(context)
+                      .ticketPlaceholder,
                   size: 220.0,
                   backgroundColor: Colors.white.withAlpha(200),
                 ),
@@ -30,7 +33,9 @@ class TicketPage extends StatelessWidget {
             child: new AppBar(
               backgroundColor: Colors.red.withAlpha(50),
               elevation: 8.0,
-              title: new Text("Twój bilet"),
+              title: new Text(S
+                  .of(context)
+                  .yourTicket),
             ),
           ),
           new Positioned.fill(
@@ -40,7 +45,9 @@ class TicketPage extends StatelessWidget {
                 child: new Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: new Text(
-                    "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!",
+                    S
+                        .of(context)
+                        .showTicketMsg,
                     textAlign: TextAlign.center,
                   ),
                 )),

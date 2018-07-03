@@ -1,3 +1,4 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/widgets/collection/collection_grid_item.dart';
@@ -40,13 +41,17 @@ class CollectionPageState extends State<CollectionPage>
               tabs: [
                 new Tab(
                   child: new Text(
-                    "KAPSLE",
+                    S
+                        .of(context)
+                        .caps,
                     style: new TextStyle(color: Colors.red),
                   ),
                 ),
                 new Tab(
                   child: new Text(
-                    "BILETY",
+                    S
+                        .of(context)
+                        .tickets,
                     style: new TextStyle(color: Colors.red),
                   ),
                 ),
@@ -74,7 +79,9 @@ class CollectionPageState extends State<CollectionPage>
         .isEmpty) {
       return new Center(
         child: new Text(
-          "Naciśnij przycisk \"+\",\naby dodać kod spod nakrętki!",
+          S
+              .of(context)
+              .addFirstCode,
           textAlign: TextAlign.center,
         ),
       );
@@ -92,7 +99,9 @@ class CollectionPageState extends State<CollectionPage>
     if (vm.numberOfTickets == 0) {
       return new Center(
         child: new Text(
-          "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!",
+          S
+              .of(context)
+              .addFirstChallenge,
           textAlign: TextAlign.center,
         ),
       );
