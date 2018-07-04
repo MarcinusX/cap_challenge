@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -185,7 +186,6 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
   _onShakeEvent(double speed) {
     if (_canShake()) {
-      print("Shake $speed");
       _increaseCounter();
       lastShake = new DateTime.now();
     }
@@ -197,7 +197,8 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
       right: 0.0,
       bottom: 8.0,
       child: new Text(
-        "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!",
+        S.of(context).bubblesExplanation(
+            counter.toString(), maxCounter.toString()),
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.caption,
       ),
@@ -244,8 +245,10 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
 
   Positioned _buildTopCaption() {
     String text = _canShake()
-        ? "Potrząśnij telefonem by dodać bąbelek!"
-        : "Następny bąbelek dostępny za ${5 - _shakeDiff()}s!";
+        ? S
+        .of(context)
+        .shakeForBubble
+        : S.of(context).nextBubbleIn((5 - _shakeDiff()).toString());
     return new Positioned(
       child: new Text(text),
       top: 18.0,
@@ -286,7 +289,9 @@ class TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
                     ),
                     _capAnimationController.isCompleted
                         ? new Text(
-                      "Gratulacje!\nOtrzymałeś 100 pkt!",
+                      S
+                          .of(context)
+                          .bubbleWinMessage,
                       textAlign: TextAlign.center,
                     )
                         : new Container(),

@@ -19,5 +19,9 @@
   "addFirstChallenge": "Complete you first challenge,\nto receive ticket for free Coca-Cola can!",
   "ticketPlaceholder": "What are we looking here? :)",
   "yourTicket": "Your ticket",
-  "showTicketMsg": "Show this ticket to salesman\nin order to receive Coca-Cola can!"
+  "showTicketMsg": "Show this ticket to salesman\nin order to receive Coca-Cola can!",
+  "bubblesExplanation": "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!",
+  "shakeForBubble": "Shake your phone to add a bubble!",
+  "nextBubbleIn": "Next bubble available in $time s!",
+  "bubbleWinMessage": "Congratulations!\nYou've received 100 pts!"
 }

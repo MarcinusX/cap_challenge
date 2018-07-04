@@ -19,5 +19,9 @@
   "addFirstChallenge": "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!",
   "ticketPlaceholder": "A czego tutaj szukamy? :)",
   "yourTicket": "Twój bilet",
-  "showTicketMsg": "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!"
+  "showTicketMsg": "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!",
+  "bubblesExplanation": "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!",
+  "shakeForBubble": "Potrząśnij telefonem by dodać bąbelek!",
+  "nextBubbleIn": "Następny bąbelek dostępny za $time s!",
+  "bubbleWinMessage": "Gratulacje!\nOtrzymałeś 100 pkt!"
 }

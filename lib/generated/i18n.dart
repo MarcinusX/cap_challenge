@@ -25,9 +25,9 @@ class S implements WidgetsLocalizations {
 
   String get addFirstChallenge =>
       "Complete you first challenge,\nto receive ticket for free Coca-Cola can!";
-
   String get addFirstCode => "Press \"+\" button,\nto add code from the cap!";
 
+  String get bubbleWinMessage => "Congratulations!\nYou've received 100 pts!";
   String get caps => "Caps";
   String get challenges => "Challenges";
   String get close => "Close";
@@ -43,16 +43,20 @@ class S implements WidgetsLocalizations {
   String get ranking => "Ranking";
   String get requiredProducts => "Required products";
   String get sendCode => "Send code";
+
+  String get shakeForBubble => "Shake your phone to add a bubble!";
   String get showMore => "Show more";
 
   String get showTicketMsg =>
       "Show this ticket to salesman\nin order to receive Coca-Cola can!";
-
   String get ticketPlaceholder => "What are we looking here? :)";
-
   String get tickets => "Tickets";
-
   String get yourTicket => "Your ticket";
+
+  String bubblesExplanation(String counter, String maxCounter) =>
+      "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!";
+
+  String nextBubbleIn(String time) => "Next bubble available in $time s!";
 }
 
 class en extends S {
@@ -69,15 +73,41 @@ class pl extends S {
   String get yourTicket => "Twój bilet";
   @override
   String get codeUnderCap => "Kod spod nakrętki";
-
   @override
   String get tickets => "Bilety";
-  @override
-  String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
   @override
   String get challenges => "Wyzwania";
   @override
   String get sendCode => "Wyślij kod";
+  @override
+  String get caps => "Kapsle";
+
+  @override
+  String get addFirstChallenge =>
+      "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!";
+
+  @override
+  String get addCodeTooltip => "Dodaj kod spod nakrętki";
+
+  @override
+  String get showTicketMsg =>
+      "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
+
+  @override
+  String get shakeForBubble => "Potrząśnij telefonem by dodać bąbelek!";
+
+  @override
+  String get ticketPlaceholder => "A czego tutaj szukamy? :)";
+
+  @override
+  String get close => "Zamknij";
+
+  @override
+  String get requiredProducts => "Wymagane produkty";
+
+  @override
+  String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
+
   @override
   String get dailyChallenge => "Wyzwanie dnia";
   @override
@@ -86,37 +116,23 @@ class pl extends S {
   String get completed => "Wykonano!";
   @override
   String get invalidCode => "Nieprawidłowy kod";
-
-  @override
-  String get caps => "Kapsle";
-  @override
-  String get addFirstChallenge =>
-      "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!";
-
-  @override
-  String get addCodeTooltip => "Dodaj kod spod nakrętki";
-  @override
-  String get showTicketMsg =>
-      "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
-
   @override
   String get invalidCodeMsg =>
       "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
   @override
   String get addFirstCode =>
       "Naciśnij przycisk \"+\",\naby dodać kod spod nakrętki!";
-
+  @override
+  String get bubbleWinMessage => "Gratulacje!\nOtrzymałeś 100 pkt!";
   @override
   String get showMore => "Pokaż więcej";
   @override
   String get ranking => "Ranking";
-
   @override
-  String get ticketPlaceholder => "A czego tutaj szukamy? :)";
+  String bubblesExplanation(String counter, String maxCounter) =>
+      "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!";
   @override
-  String get close => "Zamknij";
-  @override
-  String get requiredProducts => "Wymagane produkty";
+  String nextBubbleIn(String time) => "Następny bąbelek dostępny za $time s!";
 }
 
 
