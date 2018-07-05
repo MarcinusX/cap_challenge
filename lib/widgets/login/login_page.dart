@@ -1,3 +1,4 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/actions.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/logic/auth_service.dart';
@@ -56,7 +57,9 @@ class LoginPage extends StatelessWidget {
                   ),
                   new OAuthLoginButton(
                     onPressed: () => _loginWithGoogle(context, vm),
-                    text: "Zaloguj się z Google",
+                    text: S
+                        .of(context)
+                        .loginWithGoogle,
                     assetName: "images/sign-in-google.png",
                     backgroundColor: Colors.red,
                   ),
@@ -64,7 +67,9 @@ class LoginPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16.0),
                     child: new OAuthLoginButton(
                       onPressed: () => _loginWithFacebook(context, vm),
-                      text: "Zaloguj się z Facebook",
+                      text: S
+                          .of(context)
+                          .loginWithFacebook,
                       assetName: "images/sign-in-facebook.png",
                       backgroundColor: Colors.blue[700],
                     ),

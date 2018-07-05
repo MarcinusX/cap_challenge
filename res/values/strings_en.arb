@@ -23,5 +23,7 @@
   "bubblesExplanation": "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!",
   "shakeForBubble": "Shake your phone to add a bubble!",
   "nextBubbleIn": "Next bubble available in $time s!",
-  "bubbleWinMessage": "Congratulations!\nYou've received 100 pts!"
+  "bubbleWinMessage": "Congratulations!\nYou've received 100 pts!",
+  "loginWithGoogle": "Log in with Google",
+  "loginWithFacebook": "Log in with Facebook"
 }

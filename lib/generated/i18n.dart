@@ -26,7 +26,6 @@ class S implements WidgetsLocalizations {
   String get addFirstChallenge =>
       "Complete you first challenge,\nto receive ticket for free Coca-Cola can!";
   String get addFirstCode => "Press \"+\" button,\nto add code from the cap!";
-
   String get bubbleWinMessage => "Congratulations!\nYou've received 100 pts!";
   String get caps => "Caps";
   String get challenges => "Challenges";
@@ -40,10 +39,13 @@ class S implements WidgetsLocalizations {
 
   String get invalidCodeMsg =>
       "Check if you typed code from under the cap correctly.";
+
+  String get loginWithFacebook => "Log in with Facebook";
+
+  String get loginWithGoogle => "Log in with Google";
   String get ranking => "Ranking";
   String get requiredProducts => "Required products";
   String get sendCode => "Send code";
-
   String get shakeForBubble => "Shake your phone to add a bubble!";
   String get showMore => "Show more";
 
@@ -55,7 +57,6 @@ class S implements WidgetsLocalizations {
 
   String bubblesExplanation(String counter, String maxCounter) =>
       "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!";
-
   String nextBubbleIn(String time) => "Next bubble available in $time s!";
 }
 
@@ -75,39 +76,36 @@ class pl extends S {
   String get codeUnderCap => "Kod spod nakrętki";
   @override
   String get tickets => "Bilety";
+
+  @override
+  String get loginWithFacebook => "Zaloguj się z Facebook";
   @override
   String get challenges => "Wyzwania";
   @override
   String get sendCode => "Wyślij kod";
+
+  @override
+  String get loginWithGoogle => "Zaloguj się z Google";
   @override
   String get caps => "Kapsle";
-
   @override
   String get addFirstChallenge =>
       "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!";
-
   @override
   String get addCodeTooltip => "Dodaj kod spod nakrętki";
-
   @override
   String get showTicketMsg =>
       "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
-
   @override
   String get shakeForBubble => "Potrząśnij telefonem by dodać bąbelek!";
-
   @override
   String get ticketPlaceholder => "A czego tutaj szukamy? :)";
-
   @override
   String get close => "Zamknij";
-
   @override
   String get requiredProducts => "Wymagane produkty";
-
   @override
   String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
-
   @override
   String get dailyChallenge => "Wyzwanie dnia";
   @override

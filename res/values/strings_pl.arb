@@ -23,5 +23,7 @@
   "bubblesExplanation": "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!",
   "shakeForBubble": "Potrząśnij telefonem by dodać bąbelek!",
   "nextBubbleIn": "Następny bąbelek dostępny za $time s!",
-  "bubbleWinMessage": "Gratulacje!\nOtrzymałeś 100 pkt!"
+  "bubbleWinMessage": "Gratulacje!\nOtrzymałeś 100 pkt!",
+  "loginWithGoogle": "Zaloguj się z Google",
+  "loginWithFacebook": "Zaloguj się z Facebook"
 }
