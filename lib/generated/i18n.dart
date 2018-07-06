@@ -39,10 +39,10 @@ class S implements WidgetsLocalizations {
 
   String get invalidCodeMsg =>
       "Check if you typed code from under the cap correctly.";
-
   String get loginWithFacebook => "Log in with Facebook";
-
   String get loginWithGoogle => "Log in with Google";
+
+  String get logout => "Logout";
   String get ranking => "Ranking";
   String get requiredProducts => "Required products";
   String get sendCode => "Send code";
@@ -53,11 +53,20 @@ class S implements WidgetsLocalizations {
       "Show this ticket to salesman\nin order to receive Coca-Cola can!";
   String get ticketPlaceholder => "What are we looking here? :)";
   String get tickets => "Tickets";
+
+  String get userProfile => "User profile";
   String get yourTicket => "Your ticket";
 
   String bubblesExplanation(String counter, String maxCounter) =>
       "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!";
   String nextBubbleIn(String time) => "Next bubble available in $time s!";
+
+  String placeInRanking(String rankingPlace) =>
+      "Place in ranking: $rankingPlace";
+
+  String totalPoints(String points) => "Total points: $points";
+
+  String totalTickets(String tickets) => "Total tickets: $tickets";
 }
 
 class en extends S {
@@ -76,16 +85,17 @@ class pl extends S {
   String get codeUnderCap => "Kod spod nakrętki";
   @override
   String get tickets => "Bilety";
-
   @override
   String get loginWithFacebook => "Zaloguj się z Facebook";
   @override
   String get challenges => "Wyzwania";
   @override
   String get sendCode => "Wyślij kod";
-
   @override
   String get loginWithGoogle => "Zaloguj się z Google";
+
+  @override
+  String get userProfile => "Profil użytkownika";
   @override
   String get caps => "Kapsle";
   @override
@@ -96,6 +106,9 @@ class pl extends S {
   @override
   String get showTicketMsg =>
       "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
+
+  @override
+  String get logout => "Wyloguj";
   @override
   String get shakeForBubble => "Potrząśnij telefonem by dodać bąbelek!";
   @override
@@ -129,6 +142,16 @@ class pl extends S {
   @override
   String bubblesExplanation(String counter, String maxCounter) =>
       "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!";
+
+  @override
+  String placeInRanking(String rankingPlace) =>
+      "Miejsce w rankingu: $rankingPlace";
+
+  @override
+  String totalPoints(String points) => "Liczba punktów: $points";
+
+  @override
+  String totalTickets(String tickets) => "Liczba biletów: $tickets";
   @override
   String nextBubbleIn(String time) => "Następny bąbelek dostępny za $time s!";
 }

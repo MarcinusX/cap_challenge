@@ -1,3 +1,4 @@
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/logic/actions.dart';
 import 'package:cap_challenge/logic/app_state.dart';
 import 'package:cap_challenge/logic/auth_service.dart';
@@ -25,7 +26,9 @@ class ProfileDialog extends StatelessWidget {
       },
       builder: (BuildContext context, _ViewModel vm) {
         return new AlertDialog(
-          title: new Center(child: new Text("Profil użytkownika")),
+          title: new Center(child: new Text(S
+              .of(context)
+              .userProfile)),
           content: new SingleChildScrollView(
             child: new Column(
               mainAxisSize: MainAxisSize.min,
@@ -47,12 +50,14 @@ class ProfileDialog extends StatelessWidget {
                   style: new TextStyle(fontSize: 14.0),
                 ),
                 new Divider(),
-                new Text("Liczba punktów: ${vm.points}"),
+                new Text(S.of(context).totalPoints(vm.points.toString())),
                 new Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: new Text("Liczba biletów: ${vm.tickets}"),
+                  child: new Text(
+                      S.of(context).totalTickets(vm.tickets.toString())),
                 ),
-                new Text("Miejsce w rankingu: ${vm.rankingPlace}"),
+                new Text(
+                    S.of(context).placeInRanking(vm.rankingPlace.toString())),
               ],
             ),
           ),
@@ -65,12 +70,18 @@ class ProfileDialog extends StatelessWidget {
                   vm.onLogout();
                 });
               },
-              child: new Text("WYLOGUJ"),
+              child: new Text(S
+                  .of(context)
+                  .logout
+                  .toUpperCase()),
               textColor: Colors.red,
             ),
             new FlatButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: new Text("ZAMKNIJ"),
+              child: new Text(S
+                  .of(context)
+                  .close
+                  .toUpperCase()),
               textColor: Colors.red,
             )
           ],
@@ -86,6 +97,5 @@ class _ViewModel {
   final int rankingPlace;
   final Function onLogout;
 
-  _ViewModel(
-      {@required this.points, @required this.tickets, @required this.rankingPlace, @required this.onLogout});
+  _ViewModel({@required this.points, @required this.tickets, @required this.rankingPlace, @required this.onLogout});
 }

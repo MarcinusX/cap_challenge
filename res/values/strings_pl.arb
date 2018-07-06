@@ -25,5 +25,10 @@
   "nextBubbleIn": "Następny bąbelek dostępny za $time s!",
   "bubbleWinMessage": "Gratulacje!\nOtrzymałeś 100 pkt!",
   "loginWithGoogle": "Zaloguj się z Google",
-  "loginWithFacebook": "Zaloguj się z Facebook"
+  "loginWithFacebook": "Zaloguj się z Facebook",
+  "userProfile": "Profil użytkownika",
+  "totalPoints": "Liczba punktów: $points",
+  "totalTickets": "Liczba biletów: $tickets",
+  "placeInRanking": "Miejsce w rankingu: $rankingPlace",
+  "logout": "Wyloguj"
 }
