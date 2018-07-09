@@ -1,8 +1,3 @@
-# cap_challenge
+# Cap Challenge
 
-Cap Challenge - school project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+A concept of loyality application for Coca-Cola clients written in Flutter.
