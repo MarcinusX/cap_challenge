@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "506626629602-5e105hgn58e00oth18f1hhdh4vlej87k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszalek.capchallenge",
+            "certificate_hash": "78cd2db691f417e2b4a13f9918971eb12f757527"
+          }
+        },
+        {
           "client_id": "506626629602-t53t06721gbgjh0di6qnoruvlshfsilr.apps.googleusercontent.com",
           "client_type": 3
         }

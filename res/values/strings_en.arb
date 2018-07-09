@@ -30,5 +30,6 @@
   "totalPoints": "Total points: $points",
   "totalTickets": "Total tickets: $tickets",
   "placeInRanking": "Place in ranking: $rankingPlace",
-  "logout": "Logout"
+  "logout": "Logout",
+  "pts": "pts"
 }

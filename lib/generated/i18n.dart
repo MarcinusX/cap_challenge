@@ -41,8 +41,9 @@ class S implements WidgetsLocalizations {
       "Check if you typed code from under the cap correctly.";
   String get loginWithFacebook => "Log in with Facebook";
   String get loginWithGoogle => "Log in with Google";
-
   String get logout => "Logout";
+
+  String get pts => "pts";
   String get ranking => "Ranking";
   String get requiredProducts => "Required products";
   String get sendCode => "Send code";
@@ -53,7 +54,6 @@ class S implements WidgetsLocalizations {
       "Show this ticket to salesman\nin order to receive Coca-Cola can!";
   String get ticketPlaceholder => "What are we looking here? :)";
   String get tickets => "Tickets";
-
   String get userProfile => "User profile";
   String get yourTicket => "Your ticket";
 
@@ -63,9 +63,7 @@ class S implements WidgetsLocalizations {
 
   String placeInRanking(String rankingPlace) =>
       "Place in ranking: $rankingPlace";
-
   String totalPoints(String points) => "Total points: $points";
-
   String totalTickets(String tickets) => "Total tickets: $tickets";
 }
 
@@ -93,7 +91,6 @@ class pl extends S {
   String get sendCode => "Wyślij kod";
   @override
   String get loginWithGoogle => "Zaloguj się z Google";
-
   @override
   String get userProfile => "Profil użytkownika";
   @override
@@ -106,7 +103,6 @@ class pl extends S {
   @override
   String get showTicketMsg =>
       "Pokaż ten bilet sprzedawcy\nw celu odbioru puszki Coca-Cola!";
-
   @override
   String get logout => "Wyloguj";
   @override
@@ -127,6 +123,9 @@ class pl extends S {
   String get completed => "Wykonano!";
   @override
   String get invalidCode => "Nieprawidłowy kod";
+
+  @override
+  String get pts => "pkt";
   @override
   String get invalidCodeMsg =>
       "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
@@ -142,14 +141,11 @@ class pl extends S {
   @override
   String bubblesExplanation(String counter, String maxCounter) =>
       "Dodaj ostatni bąbelek by otrzymać dodatkowe 100 punktów!\nButelka zawiera $counter/$maxCounter bąbelków!";
-
   @override
   String placeInRanking(String rankingPlace) =>
       "Miejsce w rankingu: $rankingPlace";
-
   @override
   String totalPoints(String points) => "Liczba punktów: $points";
-
   @override
   String totalTickets(String tickets) => "Liczba biletów: $tickets";
   @override

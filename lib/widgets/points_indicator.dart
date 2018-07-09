@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
 class PointsIndicator extends StatefulWidget {
@@ -55,7 +56,9 @@ class _PoinstIndicatorState extends State<PointsIndicator> {
           "$displayPoints",
           style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.w500),
         ),
-        new Text("pkt"),
+        new Text(S
+            .of(context)
+            .pts),
       ],
     );
   }

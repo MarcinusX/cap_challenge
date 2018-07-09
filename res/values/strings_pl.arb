@@ -30,5 +30,6 @@
   "totalPoints": "Liczba punktów: $points",
   "totalTickets": "Liczba biletów: $tickets",
   "placeInRanking": "Miejsce w rankingu: $rankingPlace",
-  "logout": "Wyloguj"
+  "logout": "Wyloguj",
+  "pts": "pkt"
 }
