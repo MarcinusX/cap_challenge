@@ -4,7 +4,6 @@ import 'package:cap_challenge/models/challenge.dart';
 import 'actions.dart';
 
 AppState reduce(AppState state, action) {
-  print("reducer sees ${action.runtimeType}");
   if (action is UserProvidedAction) {
     AppState newState = state.copyWith(user: action.user);
     if (action.user == null) {
@@ -23,7 +22,11 @@ AppState reduce(AppState state, action) {
   } else if (action is ChallengesUpdatedAction) {
     return state.copyWith(challenges: action.challenges);
   } else if (action is ChallengeAddedAction) {
-    return state.copyWith(challenges: state.challenges..add(action.challenge));
+    List<Challenge> challenges = new List.from(state.challenges);
+    challenges.removeWhere((challenge) =>
+    challenge.key == action.challenge.key);
+    challenges.add(action.challenge);
+    return state.copyWith(challenges: challenges);
   } else if (action is ChallengeUpdatedAction) {
     List<Challenge> challenges = new List.from(state.challenges);
     challenges

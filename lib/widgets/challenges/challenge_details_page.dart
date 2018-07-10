@@ -156,6 +156,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
           ),
     ).toList();
     return new Row(
+      mainAxisSize: MainAxisSize.min,
       children: filledBottles..addAll(emptyBottles),
     );
   }
