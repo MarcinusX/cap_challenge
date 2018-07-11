@@ -24,9 +24,20 @@ class S implements WidgetsLocalizations {
   String get addCodeTooltip => "Add code from under the cap";
 
   String get addFirstChallenge =>
-      "Complete you first challenge,\nto receive ticket for free Coca-Cola can!";
+      "Complete you first challenge,\nto earn a ticket for free Coca-Cola can!";
   String get addFirstCode => "Press \"+\" button,\nto add code from the cap!";
-  String get bubbleWinMessage => "Congratulations!\nYou've received 100 pts!";
+
+  String get bottle1l => "bottle 1 l";
+
+  String get bottle250ml => "bottle 250 ml";
+
+  String get bottle2l => "bottle 2 l";
+
+  String get bottle500ml => "bottle 500 ml";
+
+  String get bubbleWinMessage => "Congratulations!\nYou've earned 100 pts!";
+
+  String get can330 => "can 330 ml";
   String get caps => "Caps";
   String get challenges => "Challenges";
   String get close => "Close";
@@ -42,23 +53,28 @@ class S implements WidgetsLocalizations {
   String get loginWithFacebook => "Log in with Facebook";
   String get loginWithGoogle => "Log in with Google";
   String get logout => "Logout";
-
   String get pts => "pts";
   String get ranking => "Ranking";
   String get requiredProducts => "Required products";
+
+  String get reward => "Reward:";
   String get sendCode => "Send code";
   String get shakeForBubble => "Shake your phone to add a bubble!";
   String get showMore => "Show more";
 
   String get showTicketMsg =>
-      "Show this ticket to salesman\nin order to receive Coca-Cola can!";
+      "Show this ticket to salesman\nin order to get a Coca-Cola can!";
   String get ticketPlaceholder => "What are we looking here? :)";
   String get tickets => "Tickets";
+
+  String get unknown => "Unknown";
   String get userProfile => "User profile";
   String get yourTicket => "Your ticket";
 
   String bubblesExplanation(String counter, String maxCounter) =>
-      "Add last bubble to receive extra 100 points!\nButtle contains $counter/$maxCounter bubbles!";
+      "Add last bubble to earn extra 100 points!\nBottle contains $counter/$maxCounter bubbles!";
+
+  String missingBottleMsg(String bottles) => "You only need $bottles more!";
   String nextBubbleIn(String time) => "Next bubble available in $time s!";
 
   String placeInRanking(String rankingPlace) =>
@@ -93,11 +109,17 @@ class pl extends S {
   String get loginWithGoogle => "Zaloguj się z Google";
   @override
   String get userProfile => "Profil użytkownika";
+
+  @override
+  String get bottle2l => "butelka 2 l";
   @override
   String get caps => "Kapsle";
   @override
   String get addFirstChallenge =>
       "Wykonaj swoje pierwsze wyzwanie,\naby dostać bilet na darmową Colę!";
+
+  @override
+  String get unknown => "Nieznane";
   @override
   String get addCodeTooltip => "Dodaj kod spod nakrętki";
   @override
@@ -114,7 +136,13 @@ class pl extends S {
   @override
   String get requiredProducts => "Wymagane produkty";
   @override
+  String get reward => "Nagroda:";
+
+  @override
   String get codeAddedMsg => "Butelka została dodana do Twojej kolekcji";
+
+  @override
+  String get bottle250ml => "butelka 250 ml";
   @override
   String get dailyChallenge => "Wyzwanie dnia";
   @override
@@ -123,9 +151,11 @@ class pl extends S {
   String get completed => "Wykonano!";
   @override
   String get invalidCode => "Nieprawidłowy kod";
-
   @override
   String get pts => "pkt";
+
+  @override
+  String get bottle1l => "butelka 1 l";
   @override
   String get invalidCodeMsg =>
       "Sprawdź czy poprawnie wpisałeś kod spod nakrętki.";
@@ -136,6 +166,9 @@ class pl extends S {
   String get bubbleWinMessage => "Gratulacje!\nOtrzymałeś 100 pkt!";
   @override
   String get showMore => "Pokaż więcej";
+
+  @override
+  String get can330 => "puszka 330 ml";
   @override
   String get ranking => "Ranking";
   @override
@@ -144,6 +177,9 @@ class pl extends S {
   @override
   String placeInRanking(String rankingPlace) =>
       "Miejsce w rankingu: $rankingPlace";
+
+  @override
+  String missingBottleMsg(String bottles) => "Brakuje Ci tylko $bottles!";
   @override
   String totalPoints(String points) => "Liczba punktów: $points";
   @override

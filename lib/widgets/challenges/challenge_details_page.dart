@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:cap_challenge/generated/i18n.dart';
 import 'package:cap_challenge/models/bottle.dart';
 import 'package:cap_challenge/models/challenge.dart';
 import 'package:cap_challenge/widgets/challenges/challenge_common_views.dart';
@@ -68,7 +69,9 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         children: <Widget>[
           new Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: new Text("Nagroda:"),
+            child: new Text(S
+                .of(context)
+                .reward),
           ),
           getRewardView(widget.challenge),
         ],
@@ -95,8 +98,8 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       return new Padding(
         padding: new EdgeInsets.all(16.0),
         child: new Text(
-          "Brakuje Ci tylko ${_getMissingBottles(
-              collection, challenge)}!",
+          S.of(context).missingBottleMsg(
+              _getMissingBottles(collection, challenge).toString()),
           textAlign: TextAlign.center,
         ),
       );
@@ -123,7 +126,7 @@ class ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       BuildContext context, Bottle bottle, int required, int current) {
     return new ListTile(
       title: new Text(bottleNameToString(bottle.bottleName)),
-      subtitle: new Text(bottleCapacityToLongString(bottle.capacity)),
+      subtitle: new Text(bottleCapacityToLongString(bottle.capacity, context)),
       trailing: _buildProgressIndicator(required, current),
     );
   }

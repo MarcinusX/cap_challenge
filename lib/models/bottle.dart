@@ -1,3 +1,5 @@
+import 'package:cap_challenge/generated/i18n.dart';
+import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
 
 class Bottle {
@@ -135,8 +137,8 @@ class Bottle {
   @override
   String toString() {
     return bottleNameToString(bottleName) +
-        ' - ' +
-        bottleCapacityToLongString(capacity);
+        ' - ' + '$capacity';
+//        bottleCapacityToLongString(capacity);
   }
 }
 
@@ -206,19 +208,31 @@ String bottleCapacityToShortString(Capacity capacity) {
   }
 }
 
-String bottleCapacityToLongString(Capacity capacity) {
+String bottleCapacityToLongString(Capacity capacity, BuildContext context) {
   switch (capacity) {
     case Capacity.CAN_300:
-      return "puszka 330 ml";
+      return S
+          .of(context)
+          .can330;
     case Capacity.PLASTIC_1L:
-      return "butelka 1 l";
+      return S
+          .of(context)
+          .bottle1l;
     case Capacity.PLASTIC_2L:
-      return "butelka 2 l";
+      return S
+          .of(context)
+          .bottle2l;
     case Capacity.PLASTIC_250:
-      return "butelka 250 ml";
+      return S
+          .of(context)
+          .bottle250ml;
     case Capacity.PLASTIC_500:
-      return "butelka 500 ml";
+      return S
+          .of(context)
+          .bottle500ml;
     default:
-      return "Nieznane";
+      return S
+          .of(context)
+          .unknown;
   }
 }

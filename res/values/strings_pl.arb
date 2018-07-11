@@ -31,5 +31,12 @@
   "totalTickets": "Liczba biletów: $tickets",
   "placeInRanking": "Miejsce w rankingu: $rankingPlace",
   "logout": "Wyloguj",
-  "pts": "pkt"
+  "pts": "pkt",
+  "missingBottleMsg": "Brakuje Ci tylko $bottles!",
+  "reward": "Nagroda:",
+  "can330": "puszka 330 ml",
+  "bottle1l": "butelka 1 l",
+  "bottle2l": "butelka 2 l",
+  "bottle250ml": "butelka 250 ml",
+  "unknown": "Nieznane"
 }
